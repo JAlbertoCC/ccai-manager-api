@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 
 // Routes
-import languajeRoutes from "./routes/languaje.routes";
+import languajeRoutes from "./routes/users.routes";
 
 const app = express();
 
