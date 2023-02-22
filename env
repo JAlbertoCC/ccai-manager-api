@@ -1,0 +1,7 @@
+#Cambiar por credenciales locales
+HOST="localhost"
+DATABASE="sg_ccai_manager"
+USER="root"
+PASSWORD="Paasword1"
+PORT=3000
+                                                                                                                                
