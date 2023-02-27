@@ -17,20 +17,27 @@ const checkingUser = async (req, res) => {
     const connection = await getConnection();
     const { matricula } = req.body;
   
-    if (!matricula) res.status(400).json({message: "Bad Request. No se esta recibiendo la matricula del alumno"});
+    if (!matricula) {
+      res.status(400)
+        .json({
+          error: "Bad Request.",
+          message: "Ingrese la matricula del alumno",
+        });
+    } else {
+      const result = await connection.query(`CALL checking_student(${matricula}, @matricula, @nameStudent, @firstName, @secondName)`);
 
-    const result = await connection.query(`CALL checking_student(${matricula}, @matricula, @nameStudent, @firstName, @secondName)`);
-    
-    console.log('result => ', result[5][0]);
-    res.json({
-      status: 200,
-      result: {
-        ...result[5][0]
-      }
-    });
+      console.log('result => ', result[4][0]);
+      res.status(200).json({
+        result: {
+          ...result[4][0]
+        }
+      });
+    }
+
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    console.log('error => ', error)
+    res.status(500)
+      .json(error.message);
   }
 };
 
