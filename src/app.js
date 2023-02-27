@@ -12,6 +12,7 @@ app.set('port', process.env.PORT || 3000);
 // Middlewares
 /*Funciones intermedias entre una petición y una respuesta*/
 app.use(morgan("dev"));
+app.use(express.json());
 
 //Routes
 app.use(languajeRoutes);
