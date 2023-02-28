@@ -24,17 +24,16 @@ const checkingUser = async (req, res) => {
           message: "Ingrese la matricula del alumno",
         });
     } else {
-      const result = await connection.query(`CALL checking_student(${matricula}, @matricula, @nameStudent, @firstName, @secondName)`);
-
+      const result = await connection.query(`CALL checking_student(${matricula}, @matricula)`);
+      console.log('result => ', result)
       res.status(200).json({
         result: {
-          ...result
+          ...result[0]["0"]
         }
       });
     }
 
   } catch (error) {
-    console.log('error => ', error)
     res.status(500)
       .json(error.message);
   }
