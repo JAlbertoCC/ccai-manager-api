@@ -3,7 +3,7 @@ import { getConnection } from "./../database/database"
 const getAllUsers = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from users;");
+    const result = await connection.query("SELECT * FROM all_users;");
     console.log(result)
     res.json(result);
   } catch (error) {
@@ -26,10 +26,9 @@ const checkingUser = async (req, res) => {
     } else {
       const result = await connection.query(`CALL checking_student(${matricula}, @matricula, @nameStudent, @firstName, @secondName)`);
 
-      console.log('result => ', result[4][0]);
       res.status(200).json({
         result: {
-          ...result[4][0]
+          ...result
         }
       });
     }
@@ -46,7 +45,7 @@ const registerUsers = async (req, res) => {
     const connection = await getConnection();
     console.log(req)
     // const result = await connection.query("CALL user_registration(?,?,?,?,?,?,?,?,?,?,?,)");
-    console.log(result)
+    // console.log(result)
     res.json(result);
   } catch (error) {
     res.status(500);

@@ -1,12 +1,12 @@
 import mysql from "promise-mysql";
 import config from "../config";
 
-const connection = mysql.createPool({
+const connection = mysql.createConnection({
   host: config.host,
   user: config.user,
   password: config.password,
   database: config.database,
-});
+}, { multipleStatements: true });
 
 
 const getConnection = () => {
