@@ -4,6 +4,7 @@ const router = Router();
 
 router.get("/api/users", userController.getAllUsers)
 router.post("/api/users-checking", userController.checkingUser)
-router.get("/api/register-users", userController.registerUsers)
+router.post("/api/register-users", userController.registerUsers)
+
 
 export default router;
