@@ -43,8 +43,8 @@ const checkingUser = async (req, res) => {
 const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password, email } = req.body;
-    console.log('Hola')
+    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password } = req.body;
+
     if (!matricula) {
       res.status(400).json({
         error: "Bad Request.",
@@ -53,11 +53,9 @@ const registerUsers = async (req, res) => {
     } else {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
-      console.log('hash;', hash)
       
-      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${email}', '${institutional_email}', '${hash}', @mensaje)`);
-       console.log('result', result);
-      res.status(200).json('Usuario registrado exitosamente');
+      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${institutional_email}', '${hash}', @mensaje)`);
+      res.status(200).json(result[0]);
     }
   } catch (error) {
     res.status(500);
