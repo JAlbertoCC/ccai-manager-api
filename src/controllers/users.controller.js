@@ -49,7 +49,10 @@ const registerUsers = async (req, res) => {
         error: "Bad Request.",
         message: "Ingrese sus datos completos"
       });
+      // descripcion de la funcionalidad
+
     } else {
+      // TODO cambiar esta función a la carpeta de utils
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
       console.log('hash;', hash)

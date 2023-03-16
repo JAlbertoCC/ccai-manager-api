@@ -1,18 +1,7 @@
 import bcrypt from "bcryptjs";
-import { getConnection } from "./database/database";
 
-//conexion con la base de datos
-const getAllUsers = async (req, res) => {
-  try {
-    const connnection = await getConnection();
-    const result = await connnection.query(" SELECT * FROM all_users;");
-    console.log(result);
-    res.json(result);
-  } catch (error) {
-    res.status(500);
-    res.send(error.message);
-  }
-};
+
+
 
 const testUser = async (req, res) => {
   try {
