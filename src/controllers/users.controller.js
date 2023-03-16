@@ -52,8 +52,32 @@ const registerUsers = async (req, res) => {
   }
 };
 
+const registerVisits = async (req, res) => {
+  try {
+    const { name, maternal_surname, paternal_surname, email } = req.body;
+    console.log(req.body)
+    if (!name || !maternal_surname || !paternal_surname || !email) {
+      res.status(400)
+        .json({
+          error: "Bad Request.",
+          message: "Ingresa la datos correctos.",
+        });
+    } else {
+      res.status(200)
+        .json({
+          status: "OK",
+          message: "Datos registrdos con exito",
+        });
+    }
+  } catch (error) {
+    res.status(500)
+      .json(error.message);
+  }
+};
+
 export const methods = {
   getAllUsers,
   checkingUser,
-  registerUsers
+  registerUsers,
+  registerVisits
 };

@@ -3,7 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 
 // Routes
-import languajeRoutes from "./routes/users.routes";
+import usereRoutes from "./routes/users.routes";
 
 const app = express();
 
@@ -17,6 +17,6 @@ app.use(express.json());
 app.use(cors())
 
 //Routes
-app.use(languajeRoutes);
+app.use(usereRoutes);
 
 export default app;
