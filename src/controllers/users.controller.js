@@ -26,7 +26,7 @@ const checkingUser = async (req, res) => {
         });
     } else {
       const result = await connection.query(`CALL checking_student(${matricula}, @matricula)`);
-      console.log('result => ', result)
+
       res.status(200).json({
         result: {
           ...result[0]["0"]
@@ -43,8 +43,8 @@ const checkingUser = async (req, res) => {
 const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password } = req.body;
-    
+    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password, email } = req.body;
+    console.log('Hola')
     if (!matricula) {
       res.status(400).json({
         error: "Bad Request.",
@@ -55,8 +55,8 @@ const registerUsers = async (req, res) => {
       const hash = bcrypt.hashSync(password, salt);
       console.log('hash;', hash)
       
-      const result = await connection.query(`call sp_studen_register(${matricula}, ${name}, ${lastnamef}, ${lastnamem}, ${adress}, ${phone}, ${gender}, ${career}, ${service}, ${institutional_email}, ${password},@mensaje)`);
-       console.log(result);
+      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${email}', '${institutional_email}', '${hash}', @mensaje)`);
+       console.log('result', result);
       res.status(200).json('Usuario registrado exitosamente');
     }
   } catch (error) {
@@ -66,8 +66,32 @@ const registerUsers = async (req, res) => {
   }
 };
 
+const registerVisits = async (req, res) => {
+  try {
+    const { name, maternal_surname, paternal_surname, email } = req.body;
+    console.log(req.body)
+    if (!name || !maternal_surname || !paternal_surname || !email) {
+      res.status(400)
+        .json({
+          error: "Bad Request.",
+          message: "Ingresa la datos correctos.",
+        });
+    } else {
+      res.status(200)
+        .json({
+          status: "OK",
+          message: "Datos registrdos con exito",
+        });
+    }
+  } catch (error) {
+    res.status(500)
+      .json(error.message);
+  }
+};
+
 export const methods = {
   getAllUsers,
   checkingUser,
-  registerUsers
+  registerUsers,
+  registerVisits
 };
