@@ -42,7 +42,8 @@ const checkingUser = async (req, res) => {
 
 const registerUsers = async (req, res) => {
   try {
-    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, mail, password } = req.body;
+    const connection = await getConnection();
+    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password } = req.body;
     
     if (!matricula) {
       res.status(400).json({
@@ -53,8 +54,9 @@ const registerUsers = async (req, res) => {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
       console.log('hash;', hash)
-      // const result = await connection.query(`CALL add_users('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${mail}', '${hash}')`);
-      // console.log(req);
+      
+      const result = await connection.query(`call sp_studen_register(${matricula}, ${name}, ${lastnamef}, ${lastnamem}, ${adress}, ${phone}, ${gender}, ${career}, ${service}, ${institutional_email}, ${password},@mensaje)`);
+       console.log(result);
       res.status(200).json('Usuario registrado exitosamente');
     }
   } catch (error) {
