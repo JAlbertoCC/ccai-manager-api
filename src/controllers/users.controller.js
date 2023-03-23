@@ -3,6 +3,7 @@ import { getConnection } from "./../database/database"
 import { generateHash } from "../utils/hash";
 
 
+
 const getAllUsers = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -105,9 +106,28 @@ const registerVisits = async (req, res) => {
   }
 };
 
+
+
+const consultingStudents = async(req,res)=>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from consultingStudents");
+    console.log(result);
+    res.json(result);
+
+  }catch(error){
+    res.status(500);
+    res.send(error.message);
+    
+  }
+}
+
+
+
 export const methods = {
   getAllUsers,
   checkingUser,
   registerUsers,
-  registerVisits
+  registerVisits,
+  consultingStudents
 };
