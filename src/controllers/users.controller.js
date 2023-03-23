@@ -1,4 +1,7 @@
+import bcrypt from "bcryptjs";
 import { getConnection } from "./../database/database"
+import { generateHash } from "../utils/hash";
+
 
 
 const getAllUsers = async (req, res) => {
@@ -43,31 +46,58 @@ const checkingUser = async (req, res) => {
 const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
-    console.log(req)
-    // const result = await connection.query("CALL user_registration(?,?,?,?,?,?,?,?,?,?,?,)");
-    // console.log(result)
-    res.json(result);
+    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password } = req.body;
+
+    if (!matricula) {
+      res.status(400).json({
+        error: "Bad Request.",
+        message: "Ingrese sus datos completos"
+      });
+      // descripcion de la funcionalidad
+    } else {
+      const hash = generateHash(password);
+      console.log('hash;', hash)    
+      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${institutional_email}', '${hash}', @mensaje)`);
+       console.log('result', result);
+      res.status(200).json(
+        {status: "OK", 
+        message:'Usuario registrado con exito.'
+      });
+    }
   } catch (error) {
     res.status(500);
+    console.log('error ', error)
     res.send(error.message);
   }
 };
 
 const registerVisits = async (req, res) => {
   try {
-    const { name, maternal_surname, paternal_surname, email } = req.body;
+    const connection = await getConnection();
+    const { name, maternal_surname, paternal_surname, email, is_entry } = req.body;
     console.log(req.body)
-    if (!name || !maternal_surname || !paternal_surname || !email) {
+    
+    if ( !name || !maternal_surname || !paternal_surname || !email ||! is_entry == true) {
+      const result = await connection.query(`call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`);
+      console.log('result', result);
+      res.status(200)
+      .json({
+        status: "OK", 
+        message: "Datos registrdos con exito",
+      });
+    } else if (!name ||  !email || !is_entry == false ){
+      const result = await connection.query(`call checking_visits('${name}','${email}', '${is_entry}')`);
+      console.log('result', result);
+      res.status(200)
+      .json({
+        status: "OK", 
+        message: "Datos registrdos con exito",
+      });
+    } else if (!name || !maternal_surname || !paternal_surname || !email ) {
       res.status(400)
         .json({
           error: "Bad Request.",
-          message: "Ingresa la datos correctos.",
-        });
-    } else {
-      res.status(200)
-        .json({
-          status: "OK",
-          message: "Datos registrdos con exito",
+          message: "Ingresa los datos correctos.",
         });
     }
   } catch (error) {
