@@ -64,19 +64,31 @@ const registerUsers = async (req, res) => {
 
 const registerVisits = async (req, res) => {
   try {
-    const { name, maternal_surname, paternal_surname, email } = req.body;
+    const connection = await getConnection();
+    const { name, maternal_surname, paternal_surname, email, is_entry } = req.body;
     console.log(req.body)
-    if (!name || !maternal_surname || !paternal_surname || !email) {
+    
+    if ( !name || !maternal_surname || !paternal_surname || !email ||! is_entry == true) {
+      const result = await connection.query(`call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`);
+      console.log('result', result);
+      res.status(200)
+      .json({
+        status: "OK", 
+        message: "Datos registrdos con exito",
+      });
+    } else if (!name ||  !email || !is_entry == false ){
+      const result = await connection.query(`call checking_visits('${name}','${email}', '${is_entry}')`);
+      console.log('result', result);
+      res.status(200)
+      .json({
+        status: "OK", 
+        message: "Datos registrdos con exito",
+      });
+    } else if (!name || !maternal_surname || !paternal_surname || !email ) {
       res.status(400)
         .json({
           error: "Bad Request.",
-          message: "Ingresa la datos correctos.",
-        });
-    } else {
-      res.status(200)
-        .json({
-          status: "OK",
-          message: "Datos registrdos con exito",
+          message: "Ingresa los datos correctos.",
         });
     }
   } catch (error) {
@@ -85,9 +97,28 @@ const registerVisits = async (req, res) => {
   }
 };
 
+
+
+const consultingStudents = async(req,res)=>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from consultingStudents");
+    console.log(result);
+    res.json(result);
+
+  }catch(error){
+    res.status(500);
+    res.send(error.message);
+    
+  }
+}
+
+
+
 export const methods = {
   getAllUsers,
   checkingUser,
   registerUsers,
-  registerVisits
+  registerVisits,
+  consultingStudents
 };

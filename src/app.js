@@ -8,7 +8,7 @@ import usereRoutes from "./routes/users.routes";
 const app = express();
 
 // settings
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 
 // Middlewares
 /*Funciones intermedias entre una petición y una respuesta*/
