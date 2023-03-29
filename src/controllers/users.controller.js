@@ -122,6 +122,41 @@ const consultingStudents = async(req,res)=>{
   }
 }
 
+const listSerice = async(req,res)=>{
+  try{
+    //const connection = await getConnection();
+    //const result = await connection.query("select * from service");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
+const listCarrer = async(req,res)=>{
+  try{
+    //const connection = await getConnection();
+    //const result = await connection.query("select * from carrer");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
+const listSex = async(req,res)=>{
+  try{
+    //const connection = await getConnection();
+    //const result = await connection.query("select * from sex");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
 
 
 export const methods = {
@@ -129,5 +164,8 @@ export const methods = {
   checkingUser,
   registerUsers,
   registerVisits,
-  consultingStudents
+  consultingStudents,
+  listSerice,
+  listCarrer,
+  listSex
 };
