@@ -4,7 +4,7 @@ import cors from "cors";
 
 // Routes
 import usereRoutes from "./routes/users.routes";
-
+// tengo que importar las rutas aquí. 
 const app = express();
 
 // settings
