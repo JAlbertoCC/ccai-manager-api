@@ -10,4 +10,5 @@ router.post("/api/visit-register", userController.registerVisits);
 
 router.get("/api/consulting-students",userController.consultingStudents);
 
+
 export default router;

@@ -12,13 +12,18 @@ myHeaders.append("Content-Type", "application/json");
 
 // esta es la mamada que estoy haciendo yo
 // va a recibir dos cosas el json y la uri 
-export function buildPostRequestMail(uri,jsonEmail){
-
-    return new Request(`${urlSenGrid}${uri}` , {
+export function buildPostRequestMail(jsonEmail){
+/*
+    return new Request({
+    }, {
         method: 'POST',
         headers: myHeaders,
-        body: JSON.stringify(jsonEmail), //raw
+        body: jsonEmail, //raw
         redirect: 'follow'
      } )
-
+*/
+     fetch("http://localhost:3001/api/send-email", requestOptions)
+     .then(response => response.text())
+     .then(result => console.log(result))
+     .catch(error => console.log('error', error));
 }
