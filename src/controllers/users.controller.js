@@ -17,7 +17,7 @@ const checkingUser = async (req, res) => {
   try {
     const connection = await getConnection();
     const { matricula } = req.body;
-  
+    console.log('matricula', matricula)
     if (!matricula) {
       res.status(400)
         .json({
@@ -35,6 +35,7 @@ const checkingUser = async (req, res) => {
     }
 
   } catch (error) {
+    console.log(error)
     res.status(500)
       .json(error.message);
   }
@@ -47,18 +48,22 @@ const registerUsers = async (req, res) => {
 
     if (!matricula) {
       res.status(400).json({
+        status: 400,
         error: "Bad Request.",
         message: "Ingrese sus datos completos"
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${institutional_email}', '${hash}', @mensaje)`);
+      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${institutional_email}', '${hash}', @mensaje, @succes)`);
+      console.log('result => ', result)
       res.status(200).json(result[0]);
     }
   } catch (error) {
-    res.status(500);
-    console.log('error ', error)
-    res.send(error.message);
+    res.status(500)
+      .json({
+        message: error.message,
+        status: 500
+      });
   }
 };
 
@@ -112,8 +117,6 @@ const consultingStudents = async(req,res)=>{
     
   }
 }
-
-
 
 export const methods = {
   getAllUsers,
