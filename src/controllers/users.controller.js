@@ -127,8 +127,8 @@ const listSerice = async(req,res)=>{
 
 const listCarrer = async(req,res)=>{
   try{
-    //const connection = await getConnection();
-    //const result = await connection.query("select * from carrer");
+    const connection = await getConnection();
+    const result = await connection.query("select * from career");
     console.log(result);
     res.json(result);
   } catch(error){
