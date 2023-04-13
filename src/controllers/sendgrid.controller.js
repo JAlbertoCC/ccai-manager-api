@@ -1,44 +1,41 @@
 
-import * as api from "../utilsl/index.js";
+import * as api from "../utils/index.js"; 
+// req,mensaje, res
 
-const sendEmailAcceptOrRefuse = async (req,mensaje, res) => {
+
+
+  const sendEmailAcceptOrRefuse = async (req, res) => {
     try {
-      req.body
-        var raw = JSON.stringify({
-          "personalizations": [
-            {
-              "to": [
-                {
-                  "email": "miguel.olveramc@gmail.com",
-                  "name": "Billotazo"
-                }
-              ],
-              "subject": "ENVIO DE MENSAJE DE PRUEBA DEL CCAI!"
-            }
-          ],
-          "content": [
-            {
-              "type": "text/plain",
-              "value": "Wi will rock you perros!"
-            }
-          ],
-          "from": {
-            "email": "sandrafcortes@outlook.com",
-            "name": "Sam Smith"
+      var raw = JSON.stringify({
+        "personalizations": [
+          {
+            "to": [
+              {
+                "email": "miguel.olveramc@gmail.com",
+                "name": "Billotazo"
+              }
+            ],
+            "subject": "ENVIO DE MENSAJE DE PRUEBA DEL CCAI!"
           }
-        });
-
-        const data = await api.sendigEmail(raw)
-
-        console.log("y ella bien bichi ",data);
-     // console.log(result);
-     // res.json(result);
-
+        ],
+        "content": [
+          {
+            "type": "text/plain",
+            "value": "Wi will rock you perros!"
+          }
+        ],
+        "from": {
+          "email": "sandrafcortes@outlook.com",
+          "name": "Sam Smith"
+        }
+      });
       
-    } catch (error) {
+    const response = await api.sendigEmail(raw);
+    res.status(200).json(response);
+   
 
-      res.status(500);
-      res.send(error.message);
+    } catch (error) {
+      res.status(500).json(error.message);
     }
   };
 

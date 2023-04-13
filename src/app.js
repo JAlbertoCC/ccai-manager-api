@@ -4,6 +4,8 @@ import cors from "cors";
 
 // Routes
 import usereRoutes from "./routes/users.routes";
+import sendGreidRoutes from "./routes/sendGrid.routes";
+
 // tengo que importar las rutas aquí. 
 const app = express();
 
@@ -18,5 +20,6 @@ app.use(cors())
 
 //Routes
 app.use(usereRoutes);
+app.use(sendGreidRoutes);
 
 export default app;
