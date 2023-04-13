@@ -73,7 +73,7 @@ const registerVisits = async (req, res) => {
     const { name, maternal_surname, paternal_surname, email, is_entry } = req.body;
     console.log(req.body)
     
-    if ( !name || !maternal_surname || !paternal_surname || !email ||! is_entry == true) {
+    if ( name || maternal_surname || paternal_surname || email || is_entry == true) {
       const result = await connection.query(`call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`);
       console.log('result', result);
       res.status(200)
@@ -81,7 +81,7 @@ const registerVisits = async (req, res) => {
         status: "OK", 
         message: "Datos registrdos con exito",
       });
-    } else if (!name ||  !email || !is_entry == false ){
+    } else if (name || !maternal_surname || !paternal_surname || email || is_entry == false ){
       const result = await connection.query(`call checking_visits('${name}','${email}', '${is_entry}')`);
       console.log('result', result);
       res.status(200)
@@ -118,10 +118,50 @@ const consultingStudents = async(req,res)=>{
   }
 }
 
+const listSerice = async(req,res)=>{
+  try{
+    //const connection = await getConnection();
+    //const result = await connection.query("select * from service");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
+const listCarrer = async(req,res)=>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from career");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
+const listSex = async(req,res)=>{
+  try{
+    //const connection = await getConnection();
+    //const result = await connection.query("select * from sex");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
+
 export const methods = {
   getAllUsers,
   checkingUser,
   registerUsers,
   registerVisits,
-  consultingStudents
+  consultingStudents,
+  listSerice,
+  listCarrer,
+  listSex
 };
