@@ -6,7 +6,7 @@ import * as api from "../utils/index.js";
 
   const sendEmailAcceptOrRefuse = async (req, res) => {
     try {
-      var raw = JSON.stringify({
+      const raw = {
         "personalizations": [
           {
             "to": [
@@ -28,7 +28,7 @@ import * as api from "../utils/index.js";
           "email": "sandrafcortes@outlook.com",
           "name": "Sam Smith"
         }
-      });
+      };
       
     const response = await api.sendigEmail(raw);
     res.status(200).json(response);
