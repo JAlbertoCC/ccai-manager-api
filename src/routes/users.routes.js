@@ -11,5 +11,9 @@ router.post("/api/visit-register", userController.registerVisits);
 
 router.get("/api/consulting-students",userController.consultingStudents);
 
+router.get("/api/list-service", userController.listSerice);
+router.get("/api/list-carrer", userController.listCarrer);
+
+router.get("/api/list-sex", userController.listSex);
 
 export default router;

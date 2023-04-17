@@ -1,5 +1,4 @@
-import bcrypt from "bcryptjs";
-import { getConnection } from "./../database/database";
+import { getConnection } from "./../database/database"
 import { generateHash } from "../utils/hash";
 
 const getAllUsers = async (req, res) => {
@@ -18,7 +17,7 @@ const checkingUser = async (req, res) => {
   try {
     const connection = await getConnection();
     const { matricula } = req.body;
-
+    console.log('matricula', matricula)
     if (!matricula) {
       res.status(400).json({
         error: "Bad Request.",
@@ -36,7 +35,9 @@ const checkingUser = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json(error.message);
+    console.log(error)
+    res.status(500)
+      .json(error.message);
   }
 };
 
@@ -59,57 +60,45 @@ const registerUsers = async (req, res) => {
 
     if (!matricula) {
       res.status(400).json({
+        status: 400,
         error: "Bad Request.",
         message: "Ingrese sus datos completos",
       });
-      // descripcion de la funcionalidad
     } else {
       const hash = generateHash(password);
-      console.log("hash;", hash);
-      const result = await connection.query(
-        `call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${institutional_email}', '${hash}', @mensaje)`
-      );
-      console.log("result", result);
-      res
-        .status(200)
-        .json({ status: "OK", message: "Usuario registrado con exito." });
+      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${institutional_email}', '${hash}', @mensaje, @succes)`);
+      console.log('result => ', result)
+      res.status(200).json(result[0]);
     }
   } catch (error) {
-    res.status(500);
-    console.log("error ", error);
-    res.send(error.message);
+    res.status(500)
+      .json({
+        message: error.message,
+        status: 500
+      });
   }
 };
 
 const registerVisits = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { name, maternal_surname, paternal_surname, email, is_entry } =
-      req.body;
-    console.log(req.body);
-
-    if (
-      !name ||
-      !maternal_surname ||
-      !paternal_surname ||
-      !email ||
-      !is_entry == true
-    ) {
-      const result = await connection.query(
-        `call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`
-      );
-      console.log("result", result);
-      res.status(200).json({
-        status: "OK",
+    const { name, maternal_surname, paternal_surname, email, is_entry } = req.body;
+    console.log(req.body)
+    
+    if ( name || maternal_surname || paternal_surname || email || is_entry == true) {
+      const result = await connection.query(`call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`);
+      console.log('result', result);
+      res.status(200)
+      .json({
+        status: "OK", 
         message: "Datos registrdos con exito",
       });
-    } else if (!name || !email || !is_entry == false) {
-      const result = await connection.query(
-        `call checking_visits('${name}','${email}', '${is_entry}')`
-      );
-      console.log("result", result);
-      res.status(200).json({
-        status: "OK",
+    } else if (name || !maternal_surname || !paternal_surname || email || is_entry == false ){
+      const result = await connection.query(`call checking_visits('${name}','${email}', '${is_entry}')`);
+      console.log('result', result);
+      res.status(200)
+      .json({
+        status: "OK", 
         message: "Datos registrdos con exito",
       });
     } else if (!name || !maternal_surname || !paternal_surname || !email) {
@@ -133,7 +122,44 @@ const consultingStudents = async (req, res) => {
     res.status(500);
     res.send(error.message);
   }
-};
+}
+
+const listSerice = async(req,res)=>{
+  try{
+    //const connection = await getConnection();
+    //const result = await connection.query("select * from service");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
+const listCarrer = async(req,res)=>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from career");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
+const listSex = async(req,res)=>{
+  try{
+    //const connection = await getConnection();
+    //const result = await connection.query("select * from sex");
+    console.log(result);
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
 
 export const methods = {
   getAllUsers,
@@ -141,5 +167,8 @@ export const methods = {
   registerUsers,
   registerVisits,
   consultingStudents,
+  listSerice,
+  listCarrer,
+  listSex
 };
 // crear controlador , crear otra ruta sandri.routes.js

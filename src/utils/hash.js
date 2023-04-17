@@ -6,4 +6,11 @@ const generateHash = (password) => {
   return hash;
 }
 
-export { generateHash };
+const comparePassword = async (password) => {
+  return await bcrypt.compare(password, hash)
+}
+
+export {
+  generateHash,
+  comparePassword
+};
