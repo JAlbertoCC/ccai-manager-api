@@ -4,6 +4,8 @@ import cors from "cors";
 
 // Routes
 import usereRoutes from "./routes/users.routes";
+import authRoutes from "./routes/auth.router";
+import { verifyToken } from "./middleware/validate-token";
 
 const app = express();
 
@@ -18,5 +20,6 @@ app.use(cors())
 
 //Routes
 app.use(usereRoutes);
+app.use(authRoutes);
 
 export default app;

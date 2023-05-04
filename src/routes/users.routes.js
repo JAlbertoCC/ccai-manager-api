@@ -13,6 +13,6 @@ router.get("/api/consulting-students",userController.consultingStudents);
 router.get("/api/list-service", userController.listSerice);
 router.get("/api/list-carrer", userController.listCarrer);
 
-router.get("/api/list-sex", userController.listSex);
+router.get("/api/list-sex", userController.listServices);
 
 export default router;

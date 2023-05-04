@@ -5,7 +5,7 @@ const getAllUsers = async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.query("SELECT * FROM all_users;");
-    console.log(result)
+
     res.json(result);
   } catch (error) {
     res.status(500);
@@ -17,7 +17,7 @@ const checkingUser = async (req, res) => {
   try {
     const connection = await getConnection();
     const { matricula } = req.body;
-    console.log('matricula', matricula)
+
     if (!matricula) {
       res.status(400)
         .json({
@@ -35,7 +35,6 @@ const checkingUser = async (req, res) => {
     }
 
   } catch (error) {
-    console.log(error)
     res.status(500)
       .json(error.message);
   }
@@ -45,7 +44,7 @@ const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
     const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password } = req.body;
-
+    console.log('req.body: ', req.body);
     if (!matricula) {
       res.status(400).json({
         status: 400,
@@ -54,11 +53,15 @@ const registerUsers = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_studen_register('${matricula}', '${name}', '${lastnamef}', '${lastnamem}', '${adress}', '${phone}', '${gender}', '${career}', '${service}', '${institutional_email}', '${hash}', @mensaje, @succes)`);
-      console.log('result => ', result)
-      res.status(200).json(result[0]);
+      const result = await connection.query(`call sp_studen_register('${matricula}','${name}','${lastnamem}','${lastnamef}','${adress}','${phone}','${gender}','${career}','${service}','${institutional_email}','${hash}', @mensaje, @succes);`);
+      console.log('result: ', result)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0]
+      });
     }
   } catch (error) {
+    console.log('error.message: ', error.message)
     res.status(500)
       .json({
         message: error.message,
@@ -71,11 +74,10 @@ const registerVisits = async (req, res) => {
   try {
     const connection = await getConnection();
     const { name, maternal_surname, paternal_surname, email, is_entry } = req.body;
-    console.log(req.body)
     
-    if ( name || maternal_surname || paternal_surname || email || is_entry == true) {
+    if ( name || maternal_surname || paternal_surname || email || is_entry) {
       const result = await connection.query(`call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`);
-      console.log('result', result);
+
       res.status(200)
       .json({
         status: "OK", 
@@ -83,7 +85,7 @@ const registerVisits = async (req, res) => {
       });
     } else if (name || !maternal_surname || !paternal_surname || email || is_entry == false ){
       const result = await connection.query(`call checking_visits('${name}','${email}', '${is_entry}')`);
-      console.log('result', result);
+    
       res.status(200)
       .json({
         status: "OK", 
@@ -98,7 +100,10 @@ const registerVisits = async (req, res) => {
     }
   } catch (error) {
     res.status(500)
-      .json(error.message);
+      .json({
+        status: 500,
+        message: error.message
+      });
   }
 };
 
@@ -108,9 +113,8 @@ const consultingStudents = async(req,res)=>{
   try{
     const connection = await getConnection();
     const result = await connection.query("select * from consultingStudents");
-    console.log(result);
+    
     res.json(result);
-
   }catch(error){
     res.status(500);
     res.send(error.message);
@@ -120,9 +124,9 @@ const consultingStudents = async(req,res)=>{
 
 const listSerice = async(req,res)=>{
   try{
-    //const connection = await getConnection();
-    //const result = await connection.query("select * from service");
-    console.log(result);
+    const connection = await getConnection();
+    const result = await connection.query("select * from service");
+    
     res.json(result);
   } catch(error){
     res.status(500);
@@ -134,7 +138,7 @@ const listCarrer = async(req,res)=>{
   try{
     const connection = await getConnection();
     const result = await connection.query("select * from career");
-    console.log(result);
+    
     res.json(result);
   } catch(error){
     res.status(500);
@@ -142,11 +146,11 @@ const listCarrer = async(req,res)=>{
   }
 }
 
-const listSex = async(req,res)=>{
+const listServices = async(req,res)=>{
   try{
-    //const connection = await getConnection();
-    //const result = await connection.query("select * from sex");
-    console.log(result);
+    const connection = await getConnection();
+    const result = await connection.query("select * from service");
+    
     res.json(result);
   } catch(error){
     res.status(500);
@@ -163,5 +167,5 @@ export const methods = {
   consultingStudents,
   listSerice,
   listCarrer,
-  listSex
+  listServices
 };
