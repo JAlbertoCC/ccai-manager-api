@@ -10,6 +10,7 @@ const loginUser = async (req, res) => {
     if (!userName || !userPassword) {
       res.status(400)
         .json({
+          status: 400,
           error: "Bad Request.",
           message: "Ingrese usuario y contraseña",
         });
