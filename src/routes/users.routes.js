@@ -15,5 +15,7 @@ router.get("/api/list-service", userController.listSerice);
 router.get("/api/list-carrer", userController.listCarrer);
 
 router.get("/api/list-sex", userController.listServices);
+
+router.get("/api/list-resources", userController.listResources);
 router.get("/api/list-teacher", userController.listTeacher);
 export default router;
