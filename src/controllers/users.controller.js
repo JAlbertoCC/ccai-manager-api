@@ -5,7 +5,6 @@ const getAllUsers = async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.query("SELECT * FROM all_users;");
-
     res.json(result);
   } catch (error) {
     res.status(500);
@@ -19,21 +18,21 @@ const checkingUser = async (req, res) => {
     const { matricula } = req.body;
 
     if (!matricula) {
-      res.status(400)
-        .json({
-          error: "Bad Request.",
-          message: "Ingrese la matricula del alumno",
-        });
+      res.status(400).json({
+        error: "Bad Request.",
+        message: "Ingrese la matricula del alumno",
+      });
     } else {
-      const result = await connection.query(`CALL checking_student(${matricula}, @matricula)`);
+      const result = await connection.query(
+        `CALL checking_student(${matricula}, @matricula)`
+      );
 
       res.status(200).json({
         result: {
-          ...result[0]["0"]
-        }
+          ...result[0]["0"],
+        },
       });
     }
-
   } catch (error) {
     res.status(500)
       .json(error.message);
@@ -49,7 +48,7 @@ const registerUsers = async (req, res) => {
       res.status(400).json({
         status: 400,
         error: "Bad Request.",
-        message: "Ingrese sus datos completos"
+        message: "Ingrese sus datos completos",
       });
     } else {
       const hash = generateHash(password);
@@ -91,12 +90,11 @@ const registerVisits = async (req, res) => {
         status: "OK", 
         message: "Datos registrdos con exito",
       });
-    } else if (!name || !maternal_surname || !paternal_surname || !email ) {
-      res.status(400)
-        .json({
-          error: "Bad Request.",
-          message: "Ingresa los datos correctos.",
-        });
+    } else if (!name || !maternal_surname || !paternal_surname || !email) {
+      res.status(400).json({
+        error: "Bad Request.",
+        message: "Ingresa los datos correctos.",
+      });
     }
   } catch (error) {
     res.status(500)
@@ -107,10 +105,8 @@ const registerVisits = async (req, res) => {
   }
 };
 
-
-
-const consultingStudents = async(req,res)=>{
-  try{
+const consultingStudents = async (req, res) => {
+  try {
     const connection = await getConnection();
     const result = await connection.query("select * from consultingStudents");
     
@@ -118,7 +114,6 @@ const consultingStudents = async(req,res)=>{
   }catch(error){
     res.status(500);
     res.send(error.message);
-    
   }
 }
 
@@ -169,3 +164,4 @@ export const methods = {
   listCarrer,
   listServices
 };
+// crear controlador , crear otra ruta sandri.routes.js

@@ -1,7 +1,11 @@
+# estas son las variables de entorno 
+
 #Cambiar por credenciales locales
 HOST="localhost"
 DATABASE="sg_ccai_manager"
 USER="root"
 PASSWORD="Paasword1"
 PORT=3000
+API_KEY_SENGRID="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"
+
                                                                                                                                 
