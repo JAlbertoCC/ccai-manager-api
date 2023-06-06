@@ -18,4 +18,6 @@ router.get("/api/list-sex", userController.listServices);
 
 router.get("/api/list-resources", userController.listResources);
 router.get("/api/list-teacher", userController.listTeacher);
+
+router.get("/api/list-projects", userController.listProjects);
 export default router;
