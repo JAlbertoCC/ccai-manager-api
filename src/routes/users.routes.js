@@ -20,4 +20,5 @@ router.get("/api/list-resources", userController.listResources);
 router.get("/api/list-teacher", userController.listTeacher);
 
 router.get("/api/list-projects", userController.listProjects);
+router.get("/api/list-registerStudents",userController.listStudentsRegister);
 export default router;

@@ -174,7 +174,18 @@ const listTeacher = async(req,res) =>{
     res.status(500);
     res.send(error.message);
   }
-}
+};
+const listStudentsRegister = async(req,res) =>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from teacher_view");
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
 
 const listProjects = async(req,res) =>{
   try{
@@ -200,6 +211,7 @@ export const methods = {
   listServices,
   listResources,
   listTeacher,
-  listProjects
+  listProjects,
+  listStudentsRegister
 };
 // crear controlador , crear otra ruta sandri.routes.js
