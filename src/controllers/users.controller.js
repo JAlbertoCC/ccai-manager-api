@@ -178,7 +178,7 @@ const listTeacher = async(req,res) =>{
 const listStudentsRegister = async(req,res) =>{
   try{
     const connection = await getConnection();
-    const result = await connection.query("select * from teacher_view");
+    const result = await connection.query("select * from dataregisterstudents");
     
     res.json(result);
   } catch(error){
