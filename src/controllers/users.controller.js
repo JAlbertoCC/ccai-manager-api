@@ -109,13 +109,25 @@ const consultingStudents = async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.query("select * from consultingStudents");
-    
-    res.json(result);
-  }catch(error){
+    const startDate = new Date(result[0].start_date);
+    const formattedDate = startDate.toISOString().split('T')[0];
+
+    const response = [{
+      matricula: result[0].matricula,
+      name: result[0].name,
+      first_name: result[0].first_name,
+      second_name: result[0].second_name,
+      name_career: result[0].name_career,
+      service_provide: result[0].service_provide,
+      start_date: formattedDate 
+
+    }];
+    res.json(response);
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
-}
+};
 
 const listSerice = async(req,res)=>{
   try{
