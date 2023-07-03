@@ -21,5 +21,6 @@ router.get("/api/list-teacher", userController.listTeacher);
 
 router.get("/api/list-proyects", userController.listProyects);
 router.get("/api/list-registerStudents",userController.listStudentsRegister);
+router.get(`/api/list-proyectInfo/:projectId`, userController.listProyectInfo, );
 
 export default router;
