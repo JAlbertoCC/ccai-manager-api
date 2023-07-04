@@ -213,14 +213,29 @@ const listProyects = async(req,res) =>{
 const listProyectInfo = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { projectId } = req.params.projectId;
-
-    const query = 'SELECT * FROM projectDetail WHERE projectId = ?';
-    const result = await connection.query(query, [projectId]);
-
-    res.json(result);
+    const { projectId } = req.body;
+    console.log("req.body",req.body);
+    if (!projectId) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Proyecto no encontrado ",
+      });
+    } else {
+      const result = await connection.query(`SELECT * FROM projectDetail WHERE projectId = ${projectId};`);
+      console.log('result: ', result)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0]
+      });
+    }
   } catch (error) {
-    res.status(500).send(error.message);
+    console.log('error.message: ', error.message)
+    res.status(500)
+      .json({
+        message: error.message,
+        status: 500
+      });
   }
 };
 
