@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const verifyToken = (req) => {
+const verifyToken = (req, res, next) => {
   try {
     const token = req.header('auth-token');
     
@@ -8,7 +8,13 @@ const verifyToken = (req) => {
     
     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
     console.log('verified: ', verified);
-    req.user = verified
+//    req.user = verified
+    req.user = {
+      name: verified.name,
+      id: verified.id,
+      userType: verified.userType // Agrega el tipo de usuario al objeto `req.user`
+    };
+    next();
   } catch (error) {
     res.status(400).json({error: 'token no es válido'})
     return error.message;
