@@ -21,9 +21,6 @@ router.get("/api/list-teacher", userController.listTeacher);
 
 router.get("/api/list-proyects", userController.listProyects);
 router.get("/api/list-registerStudents",userController.listStudentsRegister);
-<<<<<<< HEAD
-router.get(`/api/list-proyectInfo/:projectId`, userController.listProyectInfo);
-=======
 //router.get(`/api/list-proyectInfo/:projectId`, userController.listProyectInfo, );
 //prueba para gestionar el control de urls
 router.get('/api/list-proyectInfo/:projectId', verifyToken, (req, res, next) => {
@@ -37,6 +34,5 @@ router.get('/api/list-proyectInfo/:projectId', verifyToken, (req, res, next) => 
       next();
     }
   }, userController.listProyectInfo);
->>>>>>> 1c4b68e16c1e3e70b5bc7a9e458ed54ad3b17c34
 
 export default router;
