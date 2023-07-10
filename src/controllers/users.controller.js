@@ -132,7 +132,7 @@ const consultingStudents = async (req, res) => {
 const listSerice = async(req,res)=>{
   try{
     const connection = await getConnection();
-    const result = await connection.query("select * from service");
+    const result = await connection.query("select * from all_service");
     
     res.json(result);
   } catch(error){
@@ -144,7 +144,7 @@ const listSerice = async(req,res)=>{
 const listCarrer = async(req,res)=>{
   try{
     const connection = await getConnection();
-    const result = await connection.query("select * from career");
+    const result = await connection.query("select * from all_career");
     
     res.json(result);
   } catch(error){

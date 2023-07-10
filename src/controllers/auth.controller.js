@@ -94,8 +94,8 @@ const resetPassword = async (req, res) => {
     );
 
     if (result.length === 0) {
-      return res.status(404).json({
-        status: 404,
+      return res.status(400).json({
+        status: 400,
         message: 'Correo o matrícula no encontrados.'
       });
     }
@@ -122,6 +122,8 @@ const resetPassword = async (req, res) => {
     });
   }
 };
+
+
 // Restablece la contraseña
 const changePassword = async (req, res) => {
   try {

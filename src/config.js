@@ -7,7 +7,7 @@ config();
 
 export default {
   host: process.env.HOST || "192.168.166.64",
-  database: process.env.DATABASE || "sg_ccai_manager",
+  database: process.env.DATABASE || "sg_ccai_manager2",
   user: process.env.USER || "Servidor-CCAI",
   password: process.env.PASSWORD || "ccai"
 }

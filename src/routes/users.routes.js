@@ -23,16 +23,16 @@ router.get("/api/list-proyects", userController.listProyects);
 router.get("/api/list-registerStudents",userController.listStudentsRegister);
 //router.get(`/api/list-proyectInfo/:projectId`, userController.listProyectInfo, );
 //prueba para gestionar el control de urls
-router.get('/api/list-proyectInfo/:projectId', verifyToken, (req, res, next) => {
-    // Verifica el tipo de usuario antes de permitir el acceso a la ruta
-    if (req.user.userType === 'alumno') {
-      res.status(403).json({
-        status: 403,
-        message: 'Acceso denegado. No tienes permiso para realizar esta acción.'
-      });
-    } else {
-      next();
-    }
-  }, userController.listProyectInfo);
+// router.get('/api/list-proyectInfo/:projectId', verifyToken, (req, res, next) => {
+//     // Verifica el tipo de usuario antes de permitir el acceso a la ruta
+//     if (req.user.userType === 'alumno') {
+//       res.status(403).json({
+//         status: 403,
+//         message: 'Acceso denegado. No tienes permiso para realizar esta acción.'
+//       });
+//     } else {
+//       next();
+//     }
+//   }, userController.listProyectInfo);
 
 export default router;
