@@ -119,7 +119,7 @@ const resetPassword = async (req, res) => {
     sendPasswordResetEmail(email, resetToken);
 
     res.status(200).json({
-      status: 200,
+      status: 200, 
       message: "Correo enviado para restablecer la contraseña.",
     });
   } catch (error) {
@@ -134,8 +134,8 @@ const resetPassword = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { email, matricula } = req.body;
-    if (!email || !matricula) {
+    const { institutional_email, matricula } = req.body;
+    if (!institutional_email, !matricula) {
       res.status(400).json({
         status: 400,
         error: "Bad Request.",
@@ -144,7 +144,7 @@ const forgotPassword = async (req, res) => {
     } else {
       // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
       const result = await connection.query(
-        `SELECT * FROM users WHERE email = '${email}' AND matricula = '${matricula}'`
+        `SELECT * FROM users WHERE institutional_email = '${institutional_email}' AND matricula = '${matricula}'`
       );
       if (result.length === 0) {
         return res.status(404).json({
@@ -153,18 +153,22 @@ const forgotPassword = async (req, res) => {
         });
       } else {
         // Generar un token de restablecimiento de contraseña
-        const resetToken = generateResetToken();
+        const Token = resetToken.generateResetToken(
+          result[0][0].userMail,
+          result[0][0].userMatricula
+        );
 
         // Guardar el token en la base de datos asociado al usuario
         await connection.query(
-          `UPDATE users SET reset_token = '${resetToken}' WHERE matricula = '${matricula}'`
+          `UPDATE users SET reset_token = '${Token}' WHERE matricula = '${matricula}'`
         );
 
         // Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
-        sendPasswordResetEmail(email, resetToken);
+        sendPasswordResetEmail(institutional_email, Token);
 
         res.status(200).json({
           status: 200,
+          resetToken: Token,
           message: "Correo enviado para restablecer la contraseña.",
         });
       }
@@ -226,4 +230,5 @@ export const methods = {
   loginUser,
   resetPassword,
   changePassword,
+  forgotPassword
 };

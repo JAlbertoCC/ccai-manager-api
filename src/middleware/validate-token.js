@@ -39,7 +39,27 @@ const generateAccessToken = (userName, userPasswors) => {
   }
 }
 
+
+const generateResetToken = (userMail, userMatricula) => {
+  try {
+    // create token
+    const token = jwt.forgot({
+        matricula: userMatricula,
+        institutional_email: userMail
+    },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: '1800s'
+    });
+
+    return token;
+  } catch (error) {
+    return error.message;
+  }
+}
+
 export const methods = {
   verifyToken,
-  generateAccessToken
+  generateResetToken,
+  generateAccessToken,
 };
