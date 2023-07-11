@@ -90,52 +90,12 @@ const loginUser = async (req, res) => {
 };
 
 // Metodo para que los usuarios puedan restablecer contraseña primero verifica la exitencia
-const resetPassword = async (req, res) => {
-  try {
-    const connection = await getConnection();
-    const { email, matricula } = req.body;
-
-    // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
-    const result = await connection.query(
-      `SELECT * FROM users WHERE email = '${email}' AND matricula = '${matricula}'`
-    );
-
-    if (result.length === 0) {
-      return res.status(400).json({
-        status: 400,
-        message: "Correo o matrícula no encontrados.",
-      });
-    }
-
-    // Generar un token de restablecimiento de contraseña
-    const resetToken = generateResetToken();
-
-    // Guardar el token en la base de datos asociado al usuario
-    await connection.query(
-      `UPDATE users SET reset_token = '${resetToken}' WHERE email = '${email}'`
-    );
-
-    // Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
-    sendPasswordResetEmail(email, resetToken);
-
-    res.status(200).json({
-      status: 200, 
-      message: "Correo enviado para restablecer la contraseña.",
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: 500,
-      message: error.message,
-    });
-  }
-};
-
 // v2
 const forgotPassword = async (req, res) => {
   try {
     const connection = await getConnection();
     const { institutional_email, matricula } = req.body;
-    if (!institutional_email, !matricula) {
+    if (!institutional_email || !matricula) {
       res.status(400).json({
         status: 400,
         error: "Bad Request.",
@@ -179,11 +139,12 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+
 // Restablece la contraseña
 const changePassword = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { resetToken, newPassword, confirmNewPassword } = req.body;
+    const { Token, newPassword, confirmNewPassword } = req.body;
 
     // Verificar que las contraseñas coincidan
     if (newPassword !== confirmNewPassword) {
@@ -195,7 +156,7 @@ const changePassword = async (req, res) => {
 
     // Verificar si el token de restablecimiento es válido
     const result = await connection.query(
-      `SELECT * FROM users WHERE reset_token = '${resetToken}'`
+      `SELECT * FROM users WHERE reset_token = '${Token}'`
     );
 
     if (result.length === 0) {
@@ -210,7 +171,7 @@ const changePassword = async (req, res) => {
 
     // Actualizar la contraseña en la base de datos
     await connection.query(
-      `UPDATE users SET password = '${hashedPassword}', reset_token = NULL WHERE reset_token = '${resetToken}'`
+      `UPDATE users SET password = '${hashedPassword}', reset_token = NULL WHERE reset_token = '${Token}'`
     );
 
     res.status(200).json({
@@ -228,7 +189,6 @@ const changePassword = async (req, res) => {
 // exporta los metodos creados.
 export const methods = {
   loginUser,
-  resetPassword,
   changePassword,
   forgotPassword
 };
