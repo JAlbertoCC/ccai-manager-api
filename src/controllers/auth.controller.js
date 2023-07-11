@@ -1,15 +1,15 @@
-import { getConnection } from "./../database/database"
+import { getConnection } from "./../database/database";
 import { comparePassword } from "../utils/hash";
 import { methods as accessToken } from "./../middleware/validate-token";
-import { generateHash } from '../utils/hash';
-import { sendPasswordResetEmail } from '../utils/email';
+import { generateHash } from "../utils/hash";
+import { sendPasswordResetEmail } from "../utils/email";
 
 // metodo para que el usuario pueda iniciar sesion.
 // const loginUser = async (req, res) => {
 //   try {
 //     const connection = await getConnection();
 //     const { userName, userPassword } = req.body;
-    
+
 //     if (!userName || !userPassword) {
 //       res.status(400)
 //         .json({
@@ -23,7 +23,7 @@ import { sendPasswordResetEmail } from '../utils/email';
 
 //       if (isSame) {
 //         const token = accessToken.generateAccessToken(userName, result[0][0].userPassword)
-        
+
 //         res.status(200).json({
 //           status: 200,
 //           accessToken: token,
@@ -48,41 +48,48 @@ const loginUser = async (req, res) => {
   try {
     const connection = await getConnection();
     const { userName, userPassword } = req.body;
-    
+
     if (!userName || !userPassword) {
-      res.status(400)
-        .json({
-          status: 400,
-          error: "Bad Request.",
-          message: "Ingrese usuario y contraseña",
-        });
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingrese usuario y contraseña",
+      });
     } else {
-      const result = await connection.query(`CALL login_user('${userName}', @response);`);
-      const isSame = await comparePassword(userPassword, result[0][0].userPassword);
+      const result = await connection.query(
+        `CALL login_user('${userName}', @response);`
+      );
+      const isSame = await comparePassword(
+        userPassword,
+        result[0][0].userPassword
+      );
 
       if (isSame) {
-        const token = accessToken.generateAccessToken(userName, result[0][0].userPassword, result[0][0].userType); // Agrega el tipo de usuario al token
-        
+        const token = accessToken.generateAccessToken(
+          userName,
+          result[0][0].userPassword,
+          result[0][0].userType
+        ); // Agrega el tipo de usuario al token
+
         res.status(200).json({
           status: 200,
           accessToken: token,
-          expiresIn: '1800s'
+          expiresIn: "1800s",
         });
       } else {
         res.status(400).json({
           status: 400,
-          message: `Verifica que tu usuario y contraseña, sean correctos.`
+          message: `Verifica que tu usuario y contraseña, sean correctos.`,
         });
       }
     }
-
   } catch (error) {
     res.status(500);
     res.send(error.message);
   }
-}
+};
 
-// Metodo para que los usuarios puedan restablecer contraseña primero verifica la exitencia 
+// Metodo para que los usuarios puedan restablecer contraseña primero verifica la exitencia
 const resetPassword = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -96,7 +103,7 @@ const resetPassword = async (req, res) => {
     if (result.length === 0) {
       return res.status(400).json({
         status: 400,
-        message: 'Correo o matrícula no encontrados.'
+        message: "Correo o matrícula no encontrados.",
       });
     }
 
@@ -113,16 +120,60 @@ const resetPassword = async (req, res) => {
 
     res.status(200).json({
       status: 200,
-      message: 'Correo enviado para restablecer la contraseña.'
+      message: "Correo enviado para restablecer la contraseña.",
     });
   } catch (error) {
     res.status(500).json({
       status: 500,
-      message: error.message
+      message: error.message,
     });
   }
 };
 
+// v2
+const forgotPassword = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { email, matricula } = req.body;
+    if (!email || !matricula) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingrese datos completos",
+      });
+    } else {
+      // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
+      const result = await connection.query(
+        `SELECT * FROM users WHERE email = '${email}' AND matricula = '${matricula}'`
+      );
+      if (result.length === 0) {
+        return res.status(404).json({
+          status: 404,
+          message: "Correo o matrícula no encontrados.",
+        });
+      } else {
+        // Generar un token de restablecimiento de contraseña
+        const resetToken = generateResetToken();
+
+        // Guardar el token en la base de datos asociado al usuario
+        await connection.query(
+          `UPDATE users SET reset_token = '${resetToken}' WHERE matricula = '${matricula}'`
+        );
+
+        // Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
+        sendPasswordResetEmail(email, resetToken);
+
+        res.status(200).json({
+          status: 200,
+          message: "Correo enviado para restablecer la contraseña.",
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
 
 // Restablece la contraseña
 const changePassword = async (req, res) => {
@@ -134,7 +185,7 @@ const changePassword = async (req, res) => {
     if (newPassword !== confirmNewPassword) {
       return res.status(400).json({
         status: 400,
-        message: 'Las contraseñas no coinciden.'
+        message: "Las contraseñas no coinciden.",
       });
     }
 
@@ -146,7 +197,7 @@ const changePassword = async (req, res) => {
     if (result.length === 0) {
       return res.status(404).json({
         status: 404,
-        message: 'Token de restablecimiento inválido.'
+        message: "Token de restablecimiento inválido.",
       });
     }
 
@@ -160,20 +211,19 @@ const changePassword = async (req, res) => {
 
     res.status(200).json({
       status: 200,
-      message: 'Contraseña restablecida exitosamente.'
+      message: "Contraseña restablecida exitosamente.",
     });
   } catch (error) {
     res.status(500).json({
       status: 500,
-      message: error.message
+      message: error.message,
     });
   }
 };
-
 
 // exporta los metodos creados.
 export const methods = {
   loginUser,
   resetPassword,
-  changePassword
-}
+  changePassword,
+};
