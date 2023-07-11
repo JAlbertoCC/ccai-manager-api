@@ -3,6 +3,7 @@ import { comparePassword } from "../utils/hash";
 import { methods as accessToken } from "./../middleware/validate-token";
 import { generateHash } from "../utils/hash";
 import { sendPasswordResetEmail } from "../utils/email";
+import { token } from "morgan";
 
 // metodo para que el usuario pueda iniciar sesion.
 // const loginUser = async (req, res) => {
@@ -94,8 +95,8 @@ const loginUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { institutional_email, matricula } = req.body;
-    if (!institutional_email || !matricula) {
+    const { matricula, institutional_email } = req.body;
+    if (!matricula || !institutional_email) {
       res.status(400).json({
         status: 400,
         error: "Bad Request.",
@@ -113,22 +114,22 @@ const forgotPassword = async (req, res) => {
         });
       } else {
         // Generar un token de restablecimiento de contraseña
-        const Token = resetToken.generateResetToken(
-          result[0][0].userMail,
-          result[0][0].userMatricula
+        const token = accessToken.generateResetToken(
+          result[0][0].institutional_email,
+          result[0][0].matricula
         );
 
         // Guardar el token en la base de datos asociado al usuario
         await connection.query(
-          `UPDATE users SET reset_token = '${Token}' WHERE matricula = '${matricula}'`
+          `UPDATE users SET reset_token = '${token}' WHERE matricula = '${matricula}'`
         );
 
         // Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
-        sendPasswordResetEmail(institutional_email, Token);
+        sendPasswordResetEmail(institutional_email, token);
 
         res.status(200).json({
           status: 200,
-          resetToken: Token,
+          accessToken: token,
           message: "Correo enviado para restablecer la contraseña.",
         });
       }
@@ -138,6 +139,8 @@ const forgotPassword = async (req, res) => {
     res.send(error.message);
   }
 };
+// v3
+
 
 
 // Restablece la contraseña
@@ -190,5 +193,5 @@ const changePassword = async (req, res) => {
 export const methods = {
   loginUser,
   changePassword,
-  forgotPassword
+  forgotPassword,
 };
