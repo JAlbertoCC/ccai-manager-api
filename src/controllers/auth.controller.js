@@ -94,48 +94,44 @@ const loginUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { institutional_email, matricula } = req.body;
-    if (!institutional_email || !matricula) {
-      res.status(400).json({
+    const {matricula, institutional_email } = req.body;
+  
+    // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
+    const result = await connection.query(
+      `SELECT * FROM users WHERE institutional_email = '${institutional_email}' AND matricula = '${matricula}'`
+    );
+
+    if (result.length === 0) {
+      return res.status(400).json({
         status: 400,
-        error: "Bad Request.",
-        message: "Ingrese datos completos",
+        message: "Correo o matrícula no encontrados.",
       });
-    } else {
-      // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
-      const result = await connection.query(
-        `SELECT * FROM users WHERE institutional_email = '${institutional_email}' AND matricula = '${matricula}'`
-      );
-      if (result.length === 0) {
-        return res.status(404).json({
-          status: 404,
-          message: "Correo o matrícula no encontrados.",
-        });
-      } else {
-        // Generar un token de restablecimiento de contraseña
-        const Token = resetToken.generateResetToken(
-          result[0][0].userMail,
-          result[0][0].userMatricula
-        );
-
-        // Guardar el token en la base de datos asociado al usuario
-        await connection.query(
-          `UPDATE users SET reset_token = '${Token}' WHERE matricula = '${matricula}'`
-        );
-
-        // Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
-        sendPasswordResetEmail(institutional_email, Token);
-
-        res.status(200).json({
-          status: 200,
-          resetToken: Token,
-          message: "Correo enviado para restablecer la contraseña.",
-        });
-      }
     }
+
+    // Generar un token de restablecimiento de contraseña
+    const token = accessToken.generateResetToken(
+      result[0][0].institutional_email,
+      result[0][0].matricula
+    );
+
+    // Guardar el token en la base de datos asociado al usuario
+    await connection.query(
+      `UPDATE users SET reset_token = '${token}' WHERE institutional_email = '${institutional_email}'`
+    );
+
+    // Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
+    sendPasswordResetEmail(institutional_email, token);
+
+    res.status(200).json({
+      status: 200, 
+      accessToken: token, 
+      message: "Correo enviado para restablecer la contraseña.",
+    });
   } catch (error) {
-    res.status(500);
-    res.send(error.message);
+    res.status(500).json({
+      status: 500,
+      message: error.message,
+    });
   }
 };
 

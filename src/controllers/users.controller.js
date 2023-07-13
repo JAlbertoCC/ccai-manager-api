@@ -42,7 +42,7 @@ const checkingUser = async (req, res) => {
 const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { matricula, name, lastnamef, lastnamem, adress, phone, gender, career, service, institutional_email, password } = req.body;
+    const { matricula, name, first_name, second_name, address, cell_phoneNumber, gender, carrer, service_provide, institutional_emailEs, password } = req.body;
     console.log('req.body: ', req.body);
     if (!matricula) {
       res.status(400).json({
@@ -52,7 +52,7 @@ const registerUsers = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_studen_register('${matricula}','${name}','${lastnamem}','${lastnamef}','${adress}','${phone}','${gender}','${career}','${service}','${institutional_email}','${hash}', @mensaje, @succes);`);
+      const result = await connection.query(`call sp_student_register('${matricula}','${name}','${first_name}','${second_name}','${address}','${cell_phoneNumber}','${gender}','${carrer}','${service_provide}','${institutional_emailEs}','${hash}', @mensaje, @succes);`);
       console.log('result: ', result)
       res.status(200).json({
         status: 200,
