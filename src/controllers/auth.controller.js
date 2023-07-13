@@ -95,27 +95,13 @@ const loginUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const connection = await getConnection();
-<<<<<<< HEAD
-    const {matricula, institutional_email } = req.body;
-  
-    // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
-    const result = await connection.query(
-      `SELECT * FROM users WHERE institutional_email = '${institutional_email}' AND matricula = '${matricula}'`
-    );
-
-    if (result.length === 0) {
-      return res.status(400).json({
-=======
     const { matricula, institutional_email } = req.body;
     console.log(req.body);
     if (!matricula || !institutional_email) {
       res.status(400).json({
->>>>>>> 0053fd98145600f70f0c7f23f71a7c5c6fb0a954
         status: 400,
         message: "Correo o matrícula no encontrados.",
       });
-<<<<<<< HEAD
-=======
     } else {
       // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
       const result = await connection.query(
@@ -145,7 +131,6 @@ const forgotPassword = async (req, res) => {
           message: "Correo enviado para restablecer la contraseña.",
         });
       }
->>>>>>> 0053fd98145600f70f0c7f23f71a7c5c6fb0a954
     }
 
     // Generar un token de restablecimiento de contraseña
