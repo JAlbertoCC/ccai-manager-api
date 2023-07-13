@@ -39,12 +39,22 @@ const generateAccessToken = (userName, userPasswors) => {
   }
 }
 
+<<<<<<< HEAD
 const generateResetToken = ( matricula,institutional_email) => {
   try {
     // create token
     const token = jwt.forgot({
         Matricula: matricula,
         Institutional_email: institutional_email
+=======
+
+const generateResetToken = ( matricula, institutional_email) => {
+  try {
+    // create token
+    const token = jwt.forgot({
+        matricula2: matricula,
+        institutional_email2: institutional_email
+>>>>>>> 0053fd98145600f70f0c7f23f71a7c5c6fb0a954
     },
     process.env.TOKEN_SECRET,
     {

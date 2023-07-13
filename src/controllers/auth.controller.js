@@ -3,6 +3,7 @@ import { comparePassword } from "../utils/hash";
 import { methods as accessToken } from "./../middleware/validate-token";
 import { generateHash } from "../utils/hash";
 import { sendPasswordResetEmail } from "../utils/email";
+import { token } from "morgan";
 
 // metodo para que el usuario pueda iniciar sesion.
 // const loginUser = async (req, res) => {
@@ -94,6 +95,7 @@ const loginUser = async (req, res) => {
 const forgotPassword = async (req, res) => {
   try {
     const connection = await getConnection();
+<<<<<<< HEAD
     const {matricula, institutional_email } = req.body;
   
     // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
@@ -103,9 +105,47 @@ const forgotPassword = async (req, res) => {
 
     if (result.length === 0) {
       return res.status(400).json({
+=======
+    const { matricula, institutional_email } = req.body;
+    console.log(req.body);
+    if (!matricula || !institutional_email) {
+      res.status(400).json({
+>>>>>>> 0053fd98145600f70f0c7f23f71a7c5c6fb0a954
         status: 400,
         message: "Correo o matrícula no encontrados.",
       });
+<<<<<<< HEAD
+=======
+    } else {
+      // Verificar si el correo y la matrícula coinciden con los registros en la base de datos
+      const result = await connection.query(
+        `SELECT * FROM users WHERE institutional_email = '${institutional_email}' AND matricula = '${matricula}'`
+      );
+      if (result===0) {
+        return res.status(404).json({
+          status: 404,
+          message: "Correo o matrícula no encontrados.",
+        });
+      } else {
+        // Generar un token de restablecimiento de contraseña
+        const token = accessToken.generateResetToken(
+        );
+
+        // Guardar el token en la base de datos asociado al usuario
+        await connection.query(
+          `UPDATE users SET reset_token = '${token}' WHERE matricula = '${matricula}'`
+        );
+
+        //Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
+       sendPasswordResetEmail(institutional_email, token);
+
+        res.status(200).json({
+          status: 200,
+         // accessToken: token,
+          message: "Correo enviado para restablecer la contraseña.",
+        });
+      }
+>>>>>>> 0053fd98145600f70f0c7f23f71a7c5c6fb0a954
     }
 
     // Generar un token de restablecimiento de contraseña
@@ -134,6 +174,8 @@ const forgotPassword = async (req, res) => {
     });
   }
 };
+// v3
+
 
 
 // Restablece la contraseña
