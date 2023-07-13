@@ -52,7 +52,7 @@ const registerUsers = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_studen_register('${matricula}','${name}','${lastnamem}','${lastnamef}','${adress}','${phone}','${gender}','${career}','${service}','${institutional_email}','${hash}', @mensaje, @succes);`);
+      const result = await connection.query(`call sp_student_register('${matricula}','${name}','${lastnamem}','${lastnamef}','${adress}','${phone}','${gender}','${career}','${service}','${institutional_email}','${hash}', @mensaje, @succes);`);
       console.log('result: ', result)
       res.status(200).json({
         status: 200,

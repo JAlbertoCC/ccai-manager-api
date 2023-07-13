@@ -2,8 +2,9 @@
 import nodemailer from 'nodemailer';
 
 // Configura el transporte de correo electrónico (por ejemplo, usando el servicio SMTP de Gmail)
+
 const transporter = nodemailer.createTransport({
-  service: 'Gmail',
+  service: 'gmail',
   auth: {
     user: 'ccai.tese0101@gmail.com',
     pass: 'TESECCAI'
