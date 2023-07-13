@@ -259,3 +259,5 @@ export const methods = {
   listProyectInfo,
 };
 // crear controlador , crear otra ruta sandri.routes.js
+
+// POSBLE MEJORA CREAR NUEVOS ARCHIVOS DE CONTROLADOR Y GESTIONAR POR ACCION SEGUN EL CRUD
