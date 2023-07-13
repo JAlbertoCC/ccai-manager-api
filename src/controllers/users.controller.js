@@ -240,6 +240,9 @@ const listProyectInfo = async (req, res) => {
 };
 
 
+
+
+
 export const methods = {
   getAllUsers,
   checkingUser,
@@ -253,6 +256,6 @@ export const methods = {
   listTeacher,
   listProyects,
   listStudentsRegister,
-  listProyectInfo
+  listProyectInfo,
 };
 // crear controlador , crear otra ruta sandri.routes.js

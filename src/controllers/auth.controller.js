@@ -96,6 +96,7 @@ const forgotPassword = async (req, res) => {
   try {
     const connection = await getConnection();
     const { matricula, institutional_email } = req.body;
+    console.log(req.body);
     if (!matricula || !institutional_email) {
       res.status(400).json({
         status: 400,
@@ -107,7 +108,7 @@ const forgotPassword = async (req, res) => {
       const result = await connection.query(
         `SELECT * FROM users WHERE institutional_email = '${institutional_email}' AND matricula = '${matricula}'`
       );
-      if (result.length === 0) {
+      if (result===0) {
         return res.status(404).json({
           status: 404,
           message: "Correo o matrícula no encontrados.",
@@ -115,8 +116,6 @@ const forgotPassword = async (req, res) => {
       } else {
         // Generar un token de restablecimiento de contraseña
         const token = accessToken.generateResetToken(
-          result[0][0].institutional_email,
-          result[0][0].matricula
         );
 
         // Guardar el token en la base de datos asociado al usuario
@@ -124,12 +123,12 @@ const forgotPassword = async (req, res) => {
           `UPDATE users SET reset_token = '${token}' WHERE matricula = '${matricula}'`
         );
 
-        // Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
-        sendPasswordResetEmail(institutional_email, token);
+        //Enviar correo electrónico al usuario con el enlace de restablecimiento de contraseña
+       sendPasswordResetEmail(institutional_email, token);
 
         res.status(200).json({
           status: 200,
-          accessToken: token,
+         // accessToken: token,
           message: "Correo enviado para restablecer la contraseña.",
         });
       }
@@ -193,5 +192,5 @@ const changePassword = async (req, res) => {
 export const methods = {
   loginUser,
   changePassword,
-  forgotPassword,
+  forgotPassword
 };

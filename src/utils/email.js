@@ -5,17 +5,17 @@ import nodemailer from 'nodemailer';
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
   auth: {
-    user: 'tu_correo@gmail.com',
-    pass: 'tu_contraseña'
+    user: 'ccai.tese0101@gmail.com',
+    pass: 'TESECCAI'
   }
 });
 
-export const sendPasswordResetEmail = (email, resetToken) => {
+export const sendPasswordResetEmail = (institutional_email, token) => {
   const mailOptions = {
-    from: 'correo_institucional@tese.edu.mx',
-    to: email,
+    from: 'ccai.tese0101@gmail.com',
+    to: institutional_email,
     subject: 'Restablecimiento de contraseña',
-    text: `Haz clic en el siguiente enlace para restablecer tu contraseña: http://tu_sitio/reset-password/${resetToken}`
+    text: `Haz clic en el siguiente enlace para restablecer tu contraseña: http://tu_sitio/reset-password/${token}`
   };
 
   transporter.sendMail(mailOptions, (error, info) => {

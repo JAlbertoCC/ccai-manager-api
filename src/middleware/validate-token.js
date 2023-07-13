@@ -40,12 +40,12 @@ const generateAccessToken = (userName, userPasswors) => {
 }
 
 
-const generateResetToken = ( matricula,institutional_email) => {
+const generateResetToken = ( matricula, institutional_email) => {
   try {
     // create token
     const token = jwt.forgot({
-        Matricula: matricula,
-        Institutional_email: institutional_email
+        matricula2: matricula,
+        institutional_email2: institutional_email
     },
     process.env.TOKEN_SECRET,
     {
