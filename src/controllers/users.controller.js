@@ -68,6 +68,34 @@ const registerUsers = async (req, res) => {
       });
   }
 };
+const registerStudentInProject = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { matricula, id_Project} = req.body;
+    console.log('req.body: ', req.body);
+    if (!matricula) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingrese sus datos completos",
+      });
+    } else {
+      const hash = generateHash(password);
+      const result = await connection.query(`call sp_addStudent_inProyect('${matricula}','${id_Project}');`);
+      res.status(200).json({
+        status: 200,
+        message: "Alumno añadido al proyecto"
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500)
+      .json({
+        message: error.message,
+        status: 500
+      });
+  }
+};
 
 const registerVisits = async (req, res) => {
   try {
@@ -238,8 +266,30 @@ const listProyectInfo = async (req, res) => {
       });
   }
 };
+const listProjectDetail = async(req,res) =>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from projectDetail");
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
 
-
+const listResourceBorrowedInProject = async(req,res) =>{
+  try{
+    const  projectId  = req.params.projectId;
+    const connection = await getConnection();
+    const result = await connection.query(`select * from resource_borrowedInProject where id_project =${projectId}`);
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
 
 
 
@@ -257,6 +307,9 @@ export const methods = {
   listProyects,
   listStudentsRegister,
   listProyectInfo,
+  listProjectDetail,
+  listResourceBorrowedInProject,
+  registerStudentInProject
 };
 // crear controlador , crear otra ruta sandri.routes.js
 
