@@ -20,7 +20,7 @@ router.get("/api/consulting-students",userController.consultingStudents); // vie
 router.get("/api/list-service", userController.listSerice); // lista de los servicios a prestar del alumno
 router.get("/api/list-carrer", userController.listCarrer); // lista de las carreras del tese
 
-router.get("/api/list-sex", userController.listServices); // lista de tipo de sexo no enlista el sexo solo regresa los servicios a prestar de alumnos URGE CORREGIR
+//router.get("/api/list-sex", userController.listServices); // lista de tipo de sexo no enlista el sexo solo regresa los servicios a prestar de alumnos URGE CORREGIR ELIMINAR
 
 router.get("/api/list-resources", userController.listResources);// view lista de materiales view resources-tabla-materiales
 router.get("/api/list-teacher", userController.listTeacher); //lista de de profesores view resources-tabla-docente  
