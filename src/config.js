@@ -4,9 +4,9 @@
 import { config } from "dotenv";
 
 config();
-
+// Unhandled rejection Error: connect ETIMEDOUT at Connection._handleConnectTimeout error so ca,bia la ip del server
 export default {
-  host: process.env.HOST || "192.168.166.64",
+  host: process.env.HOST || "192.168.166.21",
   database: process.env.DATABASE || "sg_ccai_manager2",
   user: process.env.USER || "Servidor-CCAI",
   password: process.env.PASSWORD || "ccai"
