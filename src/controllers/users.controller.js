@@ -1,44 +1,6 @@
 import { getConnection } from "./../database/database"
 import { generateHash } from "../utils/hash";
-
-const getAllUsers = async (req, res) => {
-  try {
-    const connection = await getConnection();
-    const result = await connection.query("SELECT * FROM all_users;");
-    res.json(result);
-  } catch (error) {
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
-const checkingUser = async (req, res) => {
-  try {
-    const connection = await getConnection();
-    const { matricula } = req.body;
-
-    if (!matricula) {
-      res.status(400).json({
-        error: "Bad Request.",
-        message: "Ingrese la matricula del alumno",
-      });
-    } else {
-      const result = await connection.query(
-        `CALL checking_student(${matricula}, @matricula)`
-      );
-
-      res.status(200).json({
-        result: {
-          ...result[0]["0"],
-        },
-      });
-    }
-  } catch (error) {
-    res.status(500)
-      .json(error.message);
-  }
-};
-
+// procedimiento para registrar alumnos nuevos
 const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -68,6 +30,147 @@ const registerUsers = async (req, res) => {
       });
   }
 };
+
+// view muestra todos los usuarios VERIFICAR DONDE SE IMPLEMENTA EN EL FRONT
+const getAllUsers = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query("SELECT * FROM all_users;");
+    res.json(result);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+ // lista de las carreras del tese
+const listCarrer = async(req,res)=>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from all_career");  
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+// lista de los servicios a prestar del alumno
+const listSerice = async(req,res)=>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from all_service");
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+// informacion del proyecto VIEW: Proyects
+const listProyects = async(req,res) =>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from ProyectsRegisters");
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+}
+//VIEW Project-deatail
+//iNFORMACION DEL PROYECTO VISTA: PROJECTDETAIL
+const listProjectInfo = async(req,res) =>{
+  try{
+    const  projectId  = req.params.projectId;
+    const connection = await getConnection();
+    const result = await connection.query(`select * from projectInfo where id_project =${projectId}`);
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+// Miembros de un proyecto -Alumnos que se asignana a un proyecto
+const listStudentsInProject = async(req,res) =>{
+  try{
+    const  projectId  = req.params.projectId;
+    const connection = await getConnection();
+    const result = await connection.query(`select * from studentInProyect where id_project =${projectId};`);
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+// Recursos de un proyecto -Recursos prestados dentro del prpyecto
+const listResourceBorrowedInProject = async(req,res) =>{
+  try{
+    const  projectId  = req.params.projectId;
+    const connection = await getConnection();
+    const result = await connection.query(`select * from resource_borrowedInProject where id_project =${projectId}`);
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+// Asesores de un proyecto -Asesores del proyecto 
+const adviserInProject = async(req,res) =>{
+  try{
+    const  projectId  = req.params.projectId;
+    const connection = await getConnection();
+    const result = await connection.query(`select * from adviserInProject where id_project =${projectId};`);
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+
+// view RESOURCES 
+// lista de todos los recusos existentes en el CCAI
+const listResources = async(req,res)=>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from all_resources")
+    res.json(result);
+  } catch(error){
+    res.status(500)
+    res.send(error.message)
+  }
+}
+// lista de todos los profesores, docentes, asesores del ccai
+const listTeacher = async(req,res) =>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from teacher_view");
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+// lista de todos los alumnos registrados en el ccai
+const listStudentsRegister = async(req,res) =>{
+  try{
+    const connection = await getConnection();
+    const result = await connection.query("select * from dataregisterstudents");
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+
+
+// view Proyect-detail
+// Agregar Estudiantes, integrantes a un proyecto segun el ID del proyecto
 const registerStudentInProject = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -96,8 +199,7 @@ const registerStudentInProject = async (req, res) => {
       });
   }
 };
-
-
+// Agregar Materiales prestados a un proyecto segun el ID del proyecto
 const registerResourceInProject = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -126,7 +228,7 @@ const registerResourceInProject = async (req, res) => {
       });
   }
 };
-
+// Agregar Docentes, Asesores a un proyecto segun el ID del proyecto
 const registerAdviserInProject = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -155,7 +257,35 @@ const registerAdviserInProject = async (req, res) => {
       });
   }
 };
+// -----------------------------------------------------------------------------------------------------
 
+// Procedimientos por crear
+const checkingUser = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { matricula } = req.body;
+
+    if (!matricula) {
+      res.status(400).json({
+        error: "Bad Request.",
+        message: "Ingrese la matricula del alumno",
+      });
+    } else {
+      const result = await connection.query(
+        `CALL checking_student(${matricula}, @matricula)`
+      );
+
+      res.status(200).json({
+        result: {
+          ...result[0]["0"],
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500)
+      .json(error.message);
+  }
+};
 const registerVisits = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -192,7 +322,7 @@ const registerVisits = async (req, res) => {
   }
 };
 
-
+// ?? ELIMINAR SI NO SE OCUPAN jhon favor de verificar esto
 const consultingStudents = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -201,12 +331,12 @@ const consultingStudents = async (req, res) => {
     const formattedDate = startDate.toISOString().split('T')[0];
 
     const response = [{
-      matricula: result[0].matricula,
-      name: result[0].name,
-      first_name: result[0].first_name,
-      second_name: result[0].second_name,
-      name_career: result[0].name_career,
-      service_provide: result[0].service_provide,
+      matricula: result[0][0].matricula,
+      name: result[0][0].name,
+      first_name: result[0][0].first_name,
+      second_name: result[0][0].second_name,
+      name_career: result[0][0].name_career,
+      service_provide: result[0][0].service_provide,
       start_date: formattedDate 
 
     }];
@@ -217,80 +347,10 @@ const consultingStudents = async (req, res) => {
   }
 };
 
-const listSerice = async(req,res)=>{
-  try{
-    const connection = await getConnection();
-    const result = await connection.query("select * from all_service");
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-}
-
-const listCarrer = async(req,res)=>{
-  try{
-    const connection = await getConnection();
-    const result = await connection.query("select * from all_career");
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-}
-
 const listServices = async(req,res)=>{
   try{
     const connection = await getConnection();
     const result = await connection.query("select * from service");
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-}
-
-const listResources = async(req,res)=>{
-  try{
-    const connection = await getConnection();
-    const result = await connection.query("select * from all_resources")
-    res.json(result);
-  } catch(error){
-    res.status(500)
-    res.send(error.message)
-  }
-}
-
-const listTeacher = async(req,res) =>{
-  try{
-    const connection = await getConnection();
-    const result = await connection.query("select * from teacher_view");
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-};
-const listStudentsRegister = async(req,res) =>{
-  try{
-    const connection = await getConnection();
-    const result = await connection.query("select * from dataregisterstudents");
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
-const listProyects = async(req,res) =>{
-  try{
-    const connection = await getConnection();
-    const result = await connection.query("select * from ProyectsRegisters");
     
     res.json(result);
   } catch(error){
@@ -327,81 +387,23 @@ const listProyectInfo = async (req, res) => {
   }
 };
 
-
-const listResourceBorrowedInProject = async(req,res) =>{
-  try{
-    const  projectId  = req.params.projectId;
-    const connection = await getConnection();
-    const result = await connection.query(`select * from resource_borrowedInProject where id_project =${projectId}`);
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-};
-//iNFORMACION DEL PROYECTO VISTA: PROJECTDETAIL
-const listProjectInfo = async(req,res) =>{
-  try{
-    const  projectId  = req.params.projectId;
-    const connection = await getConnection();
-    const result = await connection.query(`select * from projectInfo where id_project =${projectId}`);
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-};
-// Miembros de un proyecto
-const listStudentsInProject = async(req,res) =>{
-  try{
-    const  projectId  = req.params.projectId;
-    const connection = await getConnection();
-    const result = await connection.query(`select * from studentInProyect where id_project =${projectId};`);
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
-// Asesores de un proyecto
-const adviserInProject = async(req,res) =>{
-  try{
-    const  projectId  = req.params.projectId;
-    const connection = await getConnection();
-    const result = await connection.query(`select * from adviserInProject where id_project =${projectId};`);
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-};
-
-
-
 export const methods = {
   getAllUsers,
   checkingUser,
   registerUsers,
   registerVisits,
-  consultingStudents,
   listSerice,
   listCarrer,
-  listServices,
   listResources,
   listTeacher,
   listProyects,
   listStudentsRegister,
-  listProyectInfo,
   listResourceBorrowedInProject,
-  registerStudentInProject,
   listProjectInfo,
   listStudentsInProject,
   adviserInProject,
+  // add info al proyecto alumno, recursos, asesores
+  registerStudentInProject,
   registerResourceInProject,
   registerAdviserInProject
 };
