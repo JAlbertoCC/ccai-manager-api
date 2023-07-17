@@ -269,7 +269,7 @@ const listProyectInfo = async (req, res) => {
 const listProjectDetail = async(req,res) =>{
   try{
     const connection = await getConnection();
-    const result = await connection.query("select * from projectDetail");
+    const result = await connection.query("select * from projectDetail;");
     
     res.json(result);
   } catch(error){
@@ -283,6 +283,32 @@ const listResourceBorrowedInProject = async(req,res) =>{
     const  projectId  = req.params.projectId;
     const connection = await getConnection();
     const result = await connection.query(`select * from resource_borrowedInProject where id_project =${projectId}`);
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+//iNFORMACION DEL PROYECTO VISTA: PROJECTDETAIL
+const listProjectInfo = async(req,res) =>{
+  try{
+    const  projectId  = req.params.projectId;
+    const connection = await getConnection();
+    const result = await connection.query(`select * from projectInfo where id_project =${projectId}`);
+    
+    res.json(result);
+  } catch(error){
+    res.status(500);
+    res.send(error.message);
+  }
+};
+// Miembros de un proyecto
+const listStudentsInProject = async(req,res) =>{
+  try{
+    const  projectId  = req.params.projectId;
+    const connection = await getConnection();
+    const result = await connection.query(`select * from studentInProyect where id_project =${projectId};`);
     
     res.json(result);
   } catch(error){
@@ -309,7 +335,9 @@ export const methods = {
   listProyectInfo,
   listProjectDetail,
   listResourceBorrowedInProject,
-  registerStudentInProject
+  registerStudentInProject,
+  listProjectInfo,
+  listStudentsInProject
 };
 // crear controlador , crear otra ruta sandri.routes.js
 

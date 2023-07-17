@@ -15,7 +15,8 @@ router.get("/api/consulting-students",userController.consultingStudents); // vie
 router.get("/api/list-service", userController.listSerice); // lista de los servicios a prestar del alumno
 router.get("/api/list-carrer", userController.listCarrer); // lista de las carreras del tese
 router.get("/api/users", userController.getAllUsers); // view muestra todos los usuarios VERIFICAR DONDE SE IMPLEMENTA EN EL FRONT
-
+router.get("/api/consultingInfo-Project/:projectId",userController.listProjectInfo); // listStudentsInProject
+router.get("/api/Students-InProject/:projectId",userController.listStudentsInProject);  // devuelve estudiantes de un proyecto
 
 
 
