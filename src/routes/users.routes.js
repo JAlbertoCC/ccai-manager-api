@@ -8,33 +8,36 @@ const router = Router();
 //- ELIMINAR
 
 
-//view 
-router.get("/api/list-ProjectDetail",userController.listProjectDetail);
-router.get("/api/list-ResourceBorrowedInProject/:projectId",userController.listResourceBorrowedInProject);   // mandar el projectID para que funcione
+// - view 
+
 router.get("/api/consulting-students",userController.consultingStudents); // view users tabla de usuarios registrado
 router.get("/api/list-service", userController.listSerice); // lista de los servicios a prestar del alumno
 router.get("/api/list-carrer", userController.listCarrer); // lista de las carreras del tese
 router.get("/api/users", userController.getAllUsers); // view muestra todos los usuarios VERIFICAR DONDE SE IMPLEMENTA EN EL FRONT
-router.get("/api/consultingInfo-Project/:projectId",userController.listProjectInfo); // listStudentsInProject
-router.get("/api/Students-InProject/:projectId",userController.listStudentsInProject);  // devuelve estudiantes de un proyecto
-
-
-
-router.post("/api/register-users", userController.registerUsers); // procedimiento para registrar alumnos nuevos
-router.post("/api/users-checking", userController.checkingUser); // URGE REVISAR FUNCION 
-router.post("/api/visit-register", userController.registerVisits); // URGE PROCEDIMIENTO PARA REGISTRAR VISITAS 
-router.post("/api/register-StudentInProject", userController.registerStudentInProject); 
-
-
-
-//router.get("/api/list-sex", userController.listServices); // lista de tipo de sexo no enlista el sexo solo regresa los servicios a prestar de alumnos URGE CORREGIR ELIMINAR
-
+// VIEW RECURSOS
 router.get("/api/list-resources", userController.listResources);// view lista de materiales view resources-tabla-materiales
 router.get("/api/list-teacher", userController.listTeacher); //lista de de profesores view resources-tabla-docente  
+router.get("/api/list-registerStudents",userController.listStudentsRegister); //view resources-tabla-alumno
+
 
 router.get("/api/list-proyects", userController.listProyects); //view proyects table proyectos
-router.get("/api/list-registerStudents",userController.listStudentsRegister); //view resources-tabla-alumno
-router.get(`/api/list-proyectInfo/:projectId`, userController.listProyectInfo, );
+// mandar el projectID para que funcione
+router.get("/api/consultingInfo-Project/:projectId",userController.listProjectInfo); // devuelve la informacion del proyecto
+router.get("/api/Students-InProject/:projectId",userController.listStudentsInProject);  // devuelve estudiantes de un proyecto
+router.get("/api/list-ResourceBorrowedInProject/:projectId",userController.listResourceBorrowedInProject); // devuelve materiales prestados de los proyectos    
+
+
+//- CREAR
+router.post("/api/register-users", userController.registerUsers); // procedimiento para registrar alumnos nuevos
+// router.post("/api/users-checking", userController.checkingUser); // URGE REVISAR FUNCION FALTA CREAR PROCEDIMIENTO
+// router.post("/api/visit-register", userController.registerVisits); // URGE PROCEDIMIENTO PARA REGISTRAR VISITAS FALTA CREAR PROCEDIMIENTO
+router.post("/api/register-StudentInProject", userController.registerStudentInProject); // agregar integrantes (alumnos) a los prpyectos Proyect-detail
+
+//- EDITAR
+
+
+//- ELIMINAR
+  
 
 //prueba para gestionar el control de urls
 // router.get('/api/list-proyectInfo/:projectId', verifyToken, (req, res, next) => {
