@@ -11,3 +11,18 @@ export default {
   user: process.env.USER || "Servidor-CCAI",
   password: process.env.PASSWORD || "ccai"
 }
+
+//conexion local
+/*
+
+export default {
+  host: process.env.HOST || "localhost",
+  database: process.env.DATABASE || "sg_ccai_manager2",
+  user: process.env.USER || "root",
+  password: process.env.PASSWORD || "ccai"       // password del mysql personal
+}
+
+
+
+
+*/
