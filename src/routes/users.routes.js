@@ -9,19 +9,19 @@ const router = Router();
 
 
 //view 
-router.get("/api/consulting-students",userController.consultingStudents); // view users tabla de usuarios registrado
-router.get("/api/list-service", userController.listSerice); // lista de los servicios a prestar del alumno
-router.get("/api/list-carrer", userController.listCarrer); // lista de las carreras del tese
-router.get("/api/users", userController.getAllUsers); // view muestra todos los usuarios VERIFICAR DONDE SE IMPLEMENTA EN EL FRONT
-router.get("/api/list-ResourceBorrowedInProject/:projectId",userController.listResourceBorrowedInProject);   // enlitsa los recursos dependiendo el proyecto
-router.get("/api/consultingInfo-Project/:projectId",userController.listProjectInfo); // informacion del proyecto
-router.get("/api/Students-InProject/:projectId",userController.listStudentsInProject);  // devuelve estudiantes de un proyecto
-router.get("/api/Adviser-InProject/:projectId",userController.listStudentsInProject);  //muestra los asesores dependiendo el id_project
+router.get("/api/consulting-students",userController.consultingStudents); // view users tabla de usuarios con campo Null   (correcto)
+router.get("/api/list-service", userController.listService); // lista de los servicios a prestar del alumno                (correcto)
+router.get("/api/list-carrer", userController.listCarrer); // lista de las carreras del tese                               (correcto)
+router.get("/api/users", userController.getAllUsers); // view muestra todos los usuarios VERIFICAR DONDE SE IMPLEMENTA EN EL FRONT  (correcto)
+router.get("/api/list-ResourceBorrowedInProject/:projectId",userController.listResourceBorrowedInProject);   // enlitsa los recursos dependiendo el proyecto  (correcto)
+router.get("/api/consultingInfo-Project/:projectId",userController.listProjectInfo); // informacion del proyecto  (correcto)
+router.get("/api/Students-InProject/:projectId",userController.listStudentsInProject);  // devuelve estudiantes de un proyecto  (correcto)
+router.get("/api/Adviser-InProject/:projectId",userController.listStudentsInProject);  //muestra los asesores dependiendo el id_project   (correcto)
 
 
 router.post("/api/register-users", userController.registerUsers); // procedimiento para registrar alumnos nuevos
-router.post("/api/users-checking", userController.checkingUser); // URGE REVISAR FUNCION 
-router.post("/api/visit-register", userController.registerVisits); // URGE PROCEDIMIENTO PARA REGISTRAR VISITAS 
+router.post("/api/users-checking", userController.checkingUser); // URGE REVISAR FUNCION        (No se ha creado)
+router.post("/api/visit-register", userController.registerVisits); // URGE PROCEDIMIENTO PARA REGISTRAR VISITAS  (No se ha creado)
 router.post("/api/register-StudentInProject", userController.registerStudentInProject); // registrar student en un proyecto  (post)
 router.post("/api/register-ResourceInProject", userController.registerResourceInProject);  // registrar un recurso en un proyecto (post)
 router.post("/api/register-AdviserInProject", userController.registerAdviserInProject);  // registrar un recurso en un proyecto (post)
