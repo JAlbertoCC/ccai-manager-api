@@ -194,10 +194,64 @@ const registerVisits = async (req, res) => {
 };
 
 
-const consultingStudents = async (req, res) => {
+const consultingstudentsRequest = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from consultingStudents");
+    const result = await connection.query("select * from consultingstudentsRequest");
+
+    const response = result.map((row) => {
+      const startDate = new Date(row.start_date);
+      const formattedDate = startDate.toISOString().split('T')[0];
+
+      return {
+        matricula: row.matricula,
+        name: row.name,
+        first_name: row.first_name,
+        second_name: row.second_name,
+        name_career: row.name_career,
+        service_provide: row.service_provide,
+        start_date: formattedDate,
+      };
+    });
+
+    res.json(response);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+// muestra a los estudiantes con el campo ativate = 1
+const consultingstudentsAccepts = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query("select * from consultingstudentsAccepts");
+
+    const response = result.map((row) => {
+      const startDate = new Date(row.start_date);
+      const formattedDate = startDate.toISOString().split('T')[0];
+
+      return {
+        matricula: row.matricula,
+        name: row.name,
+        first_name: row.first_name,
+        second_name: row.second_name,
+        name_career: row.name_career,
+        service_provide: row.service_provide,
+        start_date: formattedDate,
+      };
+    });
+
+    res.json(response);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+
+const consultingstudentsRech = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query("select * from consultingstudentsRech");
 
     const response = result.map((row) => {
       const startDate = new Date(row.start_date);
@@ -302,35 +356,6 @@ const listProyects = async(req,res) =>{
     res.send(error.message);
   }
 }
-const listProyectInfo = async (req, res) => {
-  try {
-    const connection = await getConnection();
-    const { projectId } = req.body;
-    console.log("req.body",req.body);
-    if (!projectId) {
-      res.status(400).json({
-        status: 400,
-        error: "Bad Request.",
-        message: "Proyecto no encontrado ",
-      });
-    } else {
-      const result = await connection.query(`SELECT * FROM projectDetail WHERE projectId = ${projectId};`);
-      console.log('result: ', result)
-      res.status(200).json({
-        status: 200,
-        ...result[0][0]
-      });
-    }
-  } catch (error) {
-    console.log('error.message: ', error.message)
-    res.status(500)
-      .json({
-        message: error.message,
-        status: 500
-      });
-  }
-};
-
 
 const listResourceBorrowedInProject = async(req,res) =>{
   try{
@@ -392,7 +417,9 @@ export const methods = {
   checkingUser,
   registerUsers,
   registerVisits,
-  consultingStudents,
+  consultingstudentsRequest,
+  consultingstudentsAccepts,
+  consultingstudentsRech,
   listService,
   listCarrer,
   listServices,
@@ -400,7 +427,6 @@ export const methods = {
   listTeacher,
   listProyects,
   listStudentsRegister,
-  listProyectInfo,
   listResourceBorrowedInProject,
   registerStudentInProject,
   listProjectInfo,
