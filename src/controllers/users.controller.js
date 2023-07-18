@@ -322,7 +322,8 @@ const registerVisits = async (req, res) => {
   }
 };
 
-// ?? ELIMINAR SI NO SE OCUPAN jhon favor de verificar esto
+// ?? ELIMINAR SI NO SE OCUPAN jhon favor de verificar esto 
+//view solitudes de alumnos = activ se muestra el alumno cuando esta en null (recien registrados)
 const consultingStudents = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -347,17 +348,7 @@ const consultingStudents = async (req, res) => {
   }
 };
 
-const listServices = async(req,res)=>{
-  try{
-    const connection = await getConnection();
-    const result = await connection.query("select * from service");
-    
-    res.json(result);
-  } catch(error){
-    res.status(500);
-    res.send(error.message);
-  }
-}
+// eliminr despuies de confirmar su desuso 
 const listProyectInfo = async (req, res) => {
   try {
     const connection = await getConnection();
