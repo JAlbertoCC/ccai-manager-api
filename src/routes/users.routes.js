@@ -26,7 +26,11 @@ router.get("/api/Adviser-InProject/:projectId",userController.adviserInProject);
 router.get("/api/list-resources", userController.listResources);// view lista de materiales view resources-tabla-materiales
 router.get("/api/list-teacher", userController.listTeacher); //lista de de profesores view resources-tabla-docente  
 router.get("/api/list-registerStudents",userController.listStudentsRegister); //view resources-tabla-alumno
-
+// view aplication student
+router.get("/api/consulting-studentsRequest",userController.consultingstudentsRequest); // view users tabla de usuarios con campo Null   (correcto)
+router.get("/api/consulting-studentsRech",userController.consultingstudentsRech); // view users tabla de usuarios con campo  active igual a  0 (correcto)
+//view register student
+router.get("/api/consulting-studentsAccepts",userController.consultingstudentsAccepts); // view users tabla de usuarios con campo  active igual a 1   (correcto)
 
 //- CREAR
 // router.post("/api/users-checking", userController.checkingUser); // URGE REVISAR FUNCION FALTA CREAR PROCEDIMIENTO

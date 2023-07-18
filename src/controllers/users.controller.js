@@ -31,7 +31,7 @@ const registerUsers = async (req, res) => {
   }
 };
 
-// view muestra todos los usuarios VERIFICAR DONDE SE IMPLEMENTA EN EL FRONT
+// view muestra todos los usuarios VERIFICAR DONDE SE IMPLEMENTA EN EL FRONT **POR ELIMINAR VERIFICAR SI SE CONSUME**
 const getAllUsers = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -167,7 +167,89 @@ const listStudentsRegister = async(req,res) =>{
     res.send(error.message);
   }
 };
+// VIEW aplication student 
+// muestra alumnos recienregistrados sin actiar o rechazar
+const consultingstudentsRequest = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query("select * from consultingstudentsRequest");
 
+    const response = result.map((row) => {
+      const startDate = new Date(row.start_date);
+      const formattedDate = startDate.toISOString().split('T')[0];
+
+      return {
+        matricula: row.matricula,
+        name: row.name,
+        first_name: row.first_name,
+        second_name: row.second_name,
+        name_career: row.name_career,
+        service_provide: row.service_provide,
+        start_date: formattedDate,
+      };
+    });
+
+    res.json(response);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+// muestra los alumnos que se rechazaron
+const consultingstudentsRech = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query("select * from consultingstudentsRech");
+
+    const response = result.map((row) => {
+      const startDate = new Date(row.start_date);
+      const formattedDate = startDate.toISOString().split('T')[0];
+
+      return {
+        matricula: row.matricula,
+        name: row.name,
+        first_name: row.first_name,
+        second_name: row.second_name,
+        name_career: row.name_career,
+        service_provide: row.service_provide,
+        start_date: formattedDate,
+      };
+    });
+
+    res.json(response);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+//VIEW users
+// muestra a los estudiantes con el campo ativate = 1, Estudiantes que fueron aceptados en el ccai
+const consultingstudentsAccepts = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const result = await connection.query("select * from consultingstudentsAccepts");
+
+    const response = result.map((row) => {
+      const startDate = new Date(row.start_date);
+      const formattedDate = startDate.toISOString().split('T')[0];
+
+      return {
+        matricula: row.matricula,
+        name: row.name,
+        first_name: row.first_name,
+        second_name: row.second_name,
+        name_career: row.name_career,
+        service_provide: row.service_provide,
+        start_date: formattedDate,
+      };
+    });
+
+    res.json(response);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
 
 // view Proyect-detail
 // Agregar Estudiantes, integrantes a un proyecto segun el ID del proyecto
@@ -393,6 +475,10 @@ export const methods = {
   listProjectInfo,
   listStudentsInProject,
   adviserInProject,
+  
+  consultingstudentsRequest,
+  consultingstudentsAccepts,
+  consultingstudentsRech,
   // add info al proyecto alumno, recursos, asesores
   registerStudentInProject,
   registerResourceInProject,
