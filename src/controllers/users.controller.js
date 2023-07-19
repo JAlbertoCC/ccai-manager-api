@@ -81,7 +81,7 @@ const listProyects = async(req,res) =>{
 //iNFORMACION DEL PROYECTO VISTA: PROJECTDETAIL
 const listProjectInfo = async(req,res) =>{
   try{
-    const  projectId  = req.params.projectId;
+    const  { projectId } = req.body;
     const connection = await getConnection();
     const result = await connection.query(`select * from projectInfo where id_project =${projectId}`);
     
@@ -94,9 +94,9 @@ const listProjectInfo = async(req,res) =>{
 // Miembros de un proyecto -Alumnos que se asignana a un proyecto
 const listStudentsInProject = async(req,res) =>{
   try{
-    const  projectId  = req.params.projectId;
+    const  id_project  = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from studentInProyect where id_project =${projectId};`);
+    const result = await connection.query(`select * from studentInProyect where id_project =${id_project};`);
     
     res.json(result);
   } catch(error){
