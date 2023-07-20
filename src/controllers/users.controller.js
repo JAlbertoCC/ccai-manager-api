@@ -81,9 +81,9 @@ const listProyects = async(req,res) =>{
 //iNFORMACION DEL PROYECTO VISTA: PROJECTDETAIL
 const listProjectInfo = async(req,res) =>{
   try{
-    const  { projectId } = req.body;
+    const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from projectInfo where id_project =${projectId}`);
+    const result = await connection.query(`select * from projectInfo where id_project = ${id_project};`);
     
     res.json(result);
   } catch(error){
@@ -94,9 +94,9 @@ const listProjectInfo = async(req,res) =>{
 // Miembros de un proyecto -Alumnos que se asignana a un proyecto
 const listStudentsInProject = async(req,res) =>{
   try{
-    const  id_project  = req.params.id_project;
+    const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from studentInProyect where id_project =${id_project};`);
+    const result = await connection.query(`select * from studentInProyect where id_project = ${id_project};`);
     
     res.json(result);
   } catch(error){
@@ -107,9 +107,9 @@ const listStudentsInProject = async(req,res) =>{
 // Recursos de un proyecto -Recursos prestados dentro del prpyecto
 const listResourceBorrowedInProject = async(req,res) =>{
   try{
-    const  projectId  = req.params.projectId;
+    const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from resource_borrowedInProject where id_project =${projectId}`);
+    const result = await connection.query(`select * from resource_borrowedInProject where id_project = ${id_project};`);
     
     res.json(result);
   } catch(error){
@@ -120,9 +120,9 @@ const listResourceBorrowedInProject = async(req,res) =>{
 // Asesores de un proyecto -Asesores del proyecto 
 const adviserInProject = async(req,res) =>{
   try{
-    const  projectId  = req.params.projectId;
+    const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from adviserInProject where id_project =${projectId};`);
+    const result = await connection.query(`select * from adviserInProject where id_project = ${id_project};`);
     
     res.json(result);
   } catch(error){

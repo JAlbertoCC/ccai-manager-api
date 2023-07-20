@@ -18,10 +18,10 @@ router.get("/api/list-carrer", userController.listCarrer); // lista de las carre
 // view Proyects
 router.get("/api/list-proyects", userController.listProyects); // devuelve la lista de los proyectos registrados
 // view Project-detail  -- mandar el projectID para que funcione
-router.get("/api/consultingInfo-Project/:projectId",userController.listProjectInfo); // informacion del proyecto
-router.get("/api/Students-InProject/:projectId",userController.listStudentsInProject);  // devuelve estudiantes de un proyecto
-router.get("/api/list-ResourceBorrowedInProject/:projectId",userController.listResourceBorrowedInProject);   // enlitsa los recursos dependiendo el proyecto
-router.get("/api/Adviser-InProject/:projectId",userController.adviserInProject);  //muestra los asesores dependiendo el id_project
+router.get("/api/consultingInfo-Project/:id_project",userController.listProjectInfo); // informacion del proyecto
+router.get("/api/Students-InProject/:id_project",userController.listStudentsInProject);  // devuelve estudiantes de un proyecto
+router.get("/api/list-ResourceBorrowedInProject/:id_project",userController.listResourceBorrowedInProject);   // enlitsa los recursos dependiendo el proyecto
+router.get("/api/Adviser-InProject/:id_project",userController.adviserInProject);  //muestra los asesores dependiendo el id_project
 // view Resources
 router.get("/api/list-resources", userController.listResources);// view lista de materiales view resources-tabla-materiales
 router.get("/api/list-teacher", userController.listTeacher); //lista de de profesores view resources-tabla-docente  
