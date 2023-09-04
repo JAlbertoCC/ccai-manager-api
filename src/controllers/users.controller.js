@@ -410,7 +410,7 @@ const registerVisits = async (req, res) => {
 const consultingStudents = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from consultingStudents");
+    const result = await connection.query("select * from consultingstudentsRequest");
 
     const response = result.map((row) => {
       const startDate = new Date(row.start_date);
@@ -433,7 +433,6 @@ const consultingStudents = async (req, res) => {
     res.send(error.message);
   }
 };
-
 // eliminr despuies de confirmar su desuso 
 const listProyectInfo = async (req, res) => {
   try {
