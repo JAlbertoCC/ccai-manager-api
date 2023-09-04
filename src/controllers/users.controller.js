@@ -4,6 +4,7 @@ import { generateHash } from "../utils/hash";
 const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
+    //Estas variables deben ser llamadas igual desde postman O desde el front
     const { matricula, name, first_name, second_name, address, cell_phoneNumber, gender, carrer, service_provide, institutional_emailEs, password } = req.body;
     console.log('req.body: ', req.body);
     if (!matricula) {
@@ -15,7 +16,7 @@ const registerUsers = async (req, res) => {
     } else {
       const hash = generateHash(password);
       const result = await connection.query(`call sp_student_register('${matricula}','${name}','${first_name}','${second_name}','${address}','${cell_phoneNumber}','${gender}','${carrer}','${service_provide}','${institutional_emailEs}','${hash}', @mensaje, @succes);`);
-      console.log('result: ', result)
+      console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
         ...result[0][0]
@@ -410,19 +411,22 @@ const consultingStudents = async (req, res) => {
   try {
     const connection = await getConnection();
     const result = await connection.query("select * from consultingStudents");
-    const startDate = new Date(result[0].start_date);
-    const formattedDate = startDate.toISOString().split('T')[0];
 
-    const response = [{
-      matricula: result[0][0].matricula,
-      name: result[0][0].name,
-      first_name: result[0][0].first_name,
-      second_name: result[0][0].second_name,
-      name_career: result[0][0].name_career,
-      service_provide: result[0][0].service_provide,
-      start_date: formattedDate 
+    const response = result.map((row) => {
+      const startDate = new Date(row.start_date);
+      const formattedDate = startDate.toISOString().split('T')[0];
 
-    }];
+      return {
+        matricula: row.matricula,
+        name: row.name,
+        first_name: row.first_name,
+        second_name: row.second_name,
+        name_career: row.name_career,
+        service_provide: row.service_provide,
+        start_date: formattedDate,
+      };
+    });
+
     res.json(response);
   } catch (error) {
     res.status(500);

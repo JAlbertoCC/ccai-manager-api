@@ -21,7 +21,4 @@ export default {
   password: process.env.PASSWORD || "ccai"       // password del mysql personal
 }
 
-
-
-
 */
