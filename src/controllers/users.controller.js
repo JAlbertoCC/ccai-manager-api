@@ -5,7 +5,7 @@ const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
     //Estas variables deben ser llamadas igual desde postman O desde el front
-    const { matricula, name, first_name, second_name, address, cell_phoneNumber, gender, carrer, service_provide, institutional_emailEs, password } = req.body;
+    const { matricula, name, first_name, second_name, cell_phoneNumber, gender, carrer, service_provide, institutional_emailEs, password,road,noAbroad,noInside,colony,locality,municipality,government,observations,postalC } = req.body;
     console.log('req.body: ', req.body);
     if (!matricula) {
       res.status(400).json({
@@ -15,7 +15,7 @@ const registerUsers = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_student_register('${matricula}','${name}','${first_name}','${second_name}','${address}','${cell_phoneNumber}','${gender}','${carrer}','${service_provide}','${institutional_emailEs}','${hash}', @mensaje, @succes);`);
+      const result = await connection.query(`call sp_student_register('${matricula}','${name}','${first_name}','${second_name}','${cell_phoneNumber}','${gender}','${carrer}','${service_provide}','${institutional_emailEs}','${hash}','${road}','${noAbroad}','${noInside}','${colony}','${locality}','${municipality}','${government}','${observations}','${postalC}', @mensaje, @succes);`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
