@@ -43,90 +43,90 @@ const getAllUsers = async (req, res) => {
     res.send(error.message);
   }
 };
- // lista de las carreras del tese
-const listCarrer = async(req,res)=>{
-  try{
+// lista de las carreras del tese
+const listCarrer = async (req, res) => {
+  try {
     const connection = await getConnection();
-    const result = await connection.query("select * from all_career");  
+    const result = await connection.query("select * from all_career");
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 }
 // lista de los servicios a prestar del alumno
-const listSerice = async(req,res)=>{
-  try{
+const listSerice = async (req, res) => {
+  try {
     const connection = await getConnection();
     const result = await connection.query("select * from all_service");
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 }
 // informacion del proyecto VIEW: Proyects
-const listProyects = async(req,res) =>{
-  try{
+const listProyects = async (req, res) => {
+  try {
     const connection = await getConnection();
     const result = await connection.query("select * from ProyectsRegisters");
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 }
 //VIEW Project-deatail
 //iNFORMACION DEL PROYECTO VISTA: PROJECTDETAIL
-const listProjectInfo = async(req,res) =>{
-  try{
+const listProjectInfo = async (req, res) => {
+  try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
     const result = await connection.query(`select * from projectInfo where id_project = ${id_project};`);
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 };
 // Miembros de un proyecto -Alumnos que se asignana a un proyecto
-const listStudentsInProject = async(req,res) =>{
-  try{
+const listStudentsInProject = async (req, res) => {
+  try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
     const result = await connection.query(`select * from studentInProyect where id_project = ${id_project};`);
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 };
 // Recursos de un proyecto -Recursos prestados dentro del prpyecto
-const listResourceBorrowedInProject = async(req,res) =>{
-  try{
+const listResourceBorrowedInProject = async (req, res) => {
+  try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
     const result = await connection.query(`select * from resource_borrowedInProject where id_project = ${id_project};`);
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 };
 // Asesores de un proyecto -Asesores del proyecto 
-const adviserInProject = async(req,res) =>{
-  try{
+const adviserInProject = async (req, res) => {
+  try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
     const result = await connection.query(`select * from adviserInProject where id_project = ${id_project};`);
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
@@ -134,36 +134,36 @@ const adviserInProject = async(req,res) =>{
 
 // view RESOURCES 
 // lista de todos los recusos existentes en el CCAI
-const listResources = async(req,res)=>{
-  try{
+const listResources = async (req, res) => {
+  try {
     const connection = await getConnection();
     const result = await connection.query("select * from all_resources")
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500)
     res.send(error.message)
   }
 }
 // lista de todos los profesores, docentes, asesores del ccai
-const listTeacher = async(req,res) =>{
-  try{
+const listTeacher = async (req, res) => {
+  try {
     const connection = await getConnection();
     const result = await connection.query("select * from teacher_view");
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
 };
 // lista de todos los alumnos registrados en el ccai
-const listStudentsRegister = async(req,res) =>{
-  try{
+const listStudentsRegister = async (req, res) => {
+  try {
     const connection = await getConnection();
     const result = await connection.query("select * from dataregisterstudents");
-    
+
     res.json(result);
-  } catch(error){
+  } catch (error) {
     res.status(500);
     res.send(error.message);
   }
@@ -257,7 +257,7 @@ const consultingstudentsAccepts = async (req, res) => {
 const registerStudentInProject = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { matricula, id_Project} = req.body;
+    const { matricula, id_Project } = req.body;
     console.log('req.body: ', req.body);
     if (!matricula) {
       res.status(400).json({
@@ -286,7 +286,7 @@ const registerStudentInProject = async (req, res) => {
 const registerResourceInProject = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { id_resourceB, id_projectR,amountP} = req.body;
+    const { id_resourceB, id_projectR, amountP } = req.body;
     console.log('req.body: ', req.body);
     if (!matricula) {
       res.status(400).json({
@@ -315,7 +315,7 @@ const registerResourceInProject = async (req, res) => {
 const registerAdviserInProject = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { matriculaAdviser, matriculaStudent,typeAdviser} = req.body;
+    const { matriculaAdviser, matriculaStudent, typeAdviser } = req.body;
     console.log('req.body: ', req.body);
     if (!matricula) {
       res.status(400).json({
@@ -348,22 +348,25 @@ const registerAdviserInProject = async (req, res) => {
 const addResources = async (req, res) => {
   try {
     const connection = await getConnection();
-    const {resoruce_name, observation, amount, status, description} = req.body;
-    if(!body){
+    const { resoruce_name_p, description_p, observation_p, status_p, amount_p } = req.body;
+    console.log('req.body: ', req.body);
+    if (!resoruce_name_p || !description_p || !observation_p || !status_p || !amount_p) {
       res.status(400).json({
         status: 400,
+        error: "Bad Request.",
         message: "Ingresa los datos completos",
       });
-    }else {
-      const result = await connection.query(`call InsertResource('${resoruce_name}', '${observation}', '${amount}', '${status}', '${description}', @mensaje);`);
+    } else {
+      const result = await connection.query(`call InsertResource('${resoruce_name_p}','${observation_p}','${amount_p}','${status_p}','${description_p}', @mensaje);`);
+      console.log('result: ', result[0][0].message)
       res.status(200).json({
-        status:200,
-        message: "Se ha registrado el material"
+        status: 200,
+        ...result[0][0]
       });
     }
   } catch (error) {
     console.log('error.message: ', error.message)
-    res.status(500).json ({
+    res.status(500).json({
       message: error.message,
       status: 500
     });
@@ -403,23 +406,23 @@ const registerVisits = async (req, res) => {
   try {
     const connection = await getConnection();
     const { name, maternal_surname, paternal_surname, email, is_entry } = req.body;
-    
-    if ( name || maternal_surname || paternal_surname || email || is_entry) {
+
+    if (name || maternal_surname || paternal_surname || email || is_entry) {
       const result = await connection.query(`call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`);
 
       res.status(200)
-      .json({
-        status: "OK", 
-        message: "Datos registrdos con exito",
-      });
-    } else if (name || !maternal_surname || !paternal_surname || email || is_entry == false ){
+        .json({
+          status: "OK",
+          message: "Datos registrdos con exito",
+        });
+    } else if (name || !maternal_surname || !paternal_surname || email || is_entry == false) {
       const result = await connection.query(`call checking_visits('${name}','${email}', '${is_entry}')`);
-    
+
       res.status(200)
-      .json({
-        status: "OK", 
-        message: "Datos registrdos con exito",
-      });
+        .json({
+          status: "OK",
+          message: "Datos registrdos con exito",
+        });
     } else if (!name || !maternal_surname || !paternal_surname || !email) {
       res.status(400).json({
         error: "Bad Request.",
@@ -468,7 +471,7 @@ const listProyectInfo = async (req, res) => {
   try {
     const connection = await getConnection();
     const { projectId } = req.body;
-    console.log("req.body",req.body);
+    console.log("req.body", req.body);
     if (!projectId) {
       res.status(400).json({
         status: 400,
