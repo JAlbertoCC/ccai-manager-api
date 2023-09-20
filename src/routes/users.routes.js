@@ -42,7 +42,8 @@ router.post("/api/visit-register", userController.registerVisits); // URGE PROCE
 router.post("/api/add-student-project", userController.registerStudentInProject); // Procedimiento para agregar o asignar integrantes (alumnos) en proyectos 
 router.post("/api/add-resources-preject", userController.registerResourceInProject); // Procedimiento para agregar recursos que se solicitan
 router.post("/api/add-adviser-project", userController.registerAdviserInProject); // Procedimiento para asignar un asespr a estudaintes y proyecto
-
+//view resources table materials
+router.post("/api/add-resources", userController.addResources); //Procedimiento para agregar materiales
 //- EDITAR
 
 

@@ -340,6 +340,36 @@ const registerAdviserInProject = async (req, res) => {
       });
   }
 };
+
+
+// view resources table materials  
+// Procedimiento para agregar materiales 
+
+const addResources = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const {resoruce_name, observation, amount, status, description} = req.body;
+    if(!body){
+      res.status(400).json({
+        status: 400,
+        message: "Ingresa los datos completos",
+      });
+    }else {
+      const result = await connection.query(`call InsertResource('${resoruce_name}', '${observation}', '${amount}', '${status}', '${description}', @mensaje);`);
+      res.status(200).json({
+        status:200,
+        message: "Se ha registrado el material"
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json ({
+      message: error.message,
+      status: 500
+    });
+  }
+};
+
 // -----------------------------------------------------------------------------------------------------
 
 // Procedimientos por crear
@@ -478,7 +508,8 @@ export const methods = {
   listProjectInfo,
   listStudentsInProject,
   adviserInProject,
-  
+  // add materials 
+  addResources,
   consultingstudentsRequest,
   consultingstudentsAccepts,
   consultingstudentsRech,
