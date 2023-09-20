@@ -44,6 +44,7 @@ router.post("/api/add-resources-preject", userController.registerResourceInProje
 router.post("/api/add-adviser-project", userController.registerAdviserInProject); // Procedimiento para asignar un asespr a estudaintes y proyecto
 //view resources table materials
 router.post("/api/add-resources", userController.addResources); //Procedimiento para agregar materiales
+router.post("/api/sp-add-teacher", userController.sp_add_teacher); // procedimiento para agregar adverses
 //- EDITAR
 
 

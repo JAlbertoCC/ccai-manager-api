@@ -349,16 +349,17 @@ const addResources = async (req, res) => {
   try {
     const connection = await getConnection();
     const {resoruce_name, observation, amount, status, description} = req.body;
-    if(!body){
+    if(!resoruce_name){
       res.status(400).json({
         status: 400,
         message: "Ingresa los datos completos",
       });
     }else {
       const result = await connection.query(`call InsertResource('${resoruce_name}', '${observation}', '${amount}', '${status}', '${description}', @mensaje);`);
+      console.log('result: ', result[0][0].message)
       res.status(200).json({
-        status:200,
-        message: "Se ha registrado el material"
+        status: 200,
+        ...result[0][0]
       });
     }
   } catch (error) {
@@ -370,6 +371,34 @@ const addResources = async (req, res) => {
   }
 };
 
+// view resources table adverser
+//proedimiento alcenado para adveser
+
+const sp_add_teacher = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const {name_adviser, division, matricula, first_name, second_name, gender, status} = req.body;
+    if(!matricula){
+      res.status(400).json({
+        status: 400,
+        message: "Error, ingresa datos correctos",
+      });
+    }else {
+      const result = await connection.query(`call sp_add_teacher('${name_adviser}', '${division}', '${matricula}', '${first_name}', '${second_name}','${gender}','${status}', @mensaje);`);
+      console.log('result: ', result[0][0].message)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0]
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json ({
+      message: error.message,
+      status: 500
+    });
+  }
+};
 // -----------------------------------------------------------------------------------------------------
 
 // Procedimientos por crear
@@ -510,6 +539,8 @@ export const methods = {
   adviserInProject,
   // add materials 
   addResources,
+// sp_add_teacher 
+  sp_add_teacher,
   consultingstudentsRequest,
   consultingstudentsAccepts,
   consultingstudentsRech,
