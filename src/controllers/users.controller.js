@@ -348,16 +348,16 @@ const registerAdviserInProject = async (req, res) => {
 const addResources = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { resoruce_name_p, description_p, observation_p, status_p, amount_p } = req.body;
+    const { resoruce_name, description, observation, status, amount } = req.body;
     console.log('req.body: ', req.body);
-    if (!resoruce_name_p || !description_p || !observation_p || !status_p || !amount_p) {
+    if (!resoruce_name || !description || !observation || !status || !amount) {
       res.status(400).json({
         status: 400,
         error: "Bad Request.",
         message: "Ingresa los datos completos",
       });
     } else {
-      const result = await connection.query(`call InsertResource('${resoruce_name_p}','${observation_p}','${amount_p}','${status_p}','${description_p}', @mensaje);`);
+      const result = await connection.query(`call InsertResource('${resoruce_name}','${observation}','${amount}','${status}','${description}');`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
