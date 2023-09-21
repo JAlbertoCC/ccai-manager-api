@@ -355,7 +355,7 @@ const addResources = async (req, res) => {
         message: "Ingresa los datos completos",
       });
     }else {
-      const result = await connection.query(`call InsertResource('${resoruce_name}', '${observation}', '${amount}', '${status}', '${description}', @mensaje);`);
+      const result = await connection.query(`call InsertResource('${resoruce_name}', '${observation}', '${amount}', '${status}', '${description}');`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
@@ -384,7 +384,7 @@ const sp_add_teacher = async (req, res) => {
         message: "Error, ingresa datos correctos",
       });
     }else {
-      const result = await connection.query(`call sp_add_teacher('${name_adviser}', '${division}', '${matricula}', '${first_name}', '${second_name}','${gender}','${status}', @mensaje);`);
+      const result = await connection.query(`call sp_add_teacher('${name_adviser}', '${division}', '${matricula}', '${first_name}', '${second_name}','${gender}','${status}');`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
