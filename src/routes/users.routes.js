@@ -49,7 +49,7 @@ router.post("/api/sp-add-teacher", userController.sp_add_teacher); // procedimie
 
 
 //- ELIMINAR
-  
+router.delete("/api/delete-materials", userController.deleteMaterials); // Procedimiento para eliminar materiales 
 
 
 
