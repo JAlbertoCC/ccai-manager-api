@@ -373,6 +373,39 @@ const addResources = async (req, res) => {
   }
 };
 
+
+// Procedimientos de Eliminación ------------------------------------------------------------
+
+//view resources tabla materiales 
+// Procedimiento para eliminar materiales 
+
+const deleteMaterials = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { id_resource } = req.body;
+    if (!id_resource) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingresa un ID válido",
+      });
+    } else {
+      const result = await connection.query(`call DeleteResources ('${id_resource}');`);
+      console.log('result: ', result[0][0].message)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0]
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json({
+      message: error.message,
+      status: 500
+    });
+  };
+};
+
 // -----------------------------------------------------------------------------------------------------
 
 // Procedimientos por crear
@@ -519,7 +552,9 @@ export const methods = {
   // add info al proyecto alumno, recursos, asesores
   registerStudentInProject,
   registerResourceInProject,
-  registerAdviserInProject
+  registerAdviserInProject,
+  // delete material
+  deleteMaterials
 };
 // crear controlador , crear otra ruta sandri.routes.js
 

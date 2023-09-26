@@ -48,7 +48,7 @@ router.post("/api/add-resources", userController.addResources); //Procedimiento 
 
 
 //- ELIMINAR
-  
+router.delete("/api/delete-materials", userController.deleteMaterials); // Procedimiento para eliminar materiales 
 
 
 
