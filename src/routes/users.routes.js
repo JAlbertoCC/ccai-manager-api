@@ -51,7 +51,7 @@ router.post("/api/sp-add-teacher", userController.sp_add_teacher); // procedimie
 //- ELIMINAR
 router.delete("/api/delete-materials", userController.deleteMaterials); // Procedimiento para eliminar materiales 
 
-
+router.delete("/api/delete-teacher", userController.deleteTeacher); // Procedimiento para eliminar teacher
 
 
 //prueba para gestionar el control de urls

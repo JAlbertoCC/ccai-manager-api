@@ -373,6 +373,35 @@ const addResources = async (req, res) => {
   }
 };
 
+// view resources table adverser
+//proedimiento alcenado para adveser
+
+const sp_add_teacher = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const {name_adviser, division, matricula, first_name, second_name, gender, status} = req.body;
+    if(!matricula){
+      res.status(400).json({
+        status: 400,
+        message: "Error, ingresa datos correctos",
+      });
+    }else {
+      const result = await connection.query(`call sp_add_teacher('${name_adviser}', '${division}', '${matricula}', '${first_name}', '${second_name}','${gender}','${status}');`);
+      console.log('result: ', result[0][0].message)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0]
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json ({
+      message: error.message,
+      status: 500
+    });
+  }
+};
+
 
 // Procedimientos de Eliminación ------------------------------------------------------------
 
@@ -406,6 +435,35 @@ const deleteMaterials = async (req, res) => {
   };
 };
 
+
+// procedimiento de eliminacion docentes 
+const deleteTeacher = async(req, res) =>{
+  try{
+      const connection = await getConnection();
+      const {id_adviser} = req.body;
+      if(!id_adviser){
+        res.status(400).json({
+          status: 400,
+          error: "Bad Request. ",
+          message: "Ingresa un ID valido",
+        });
+      } else{
+        const result = await connection.query(`call deleteTeacher_ ('${id_adviser}');`);
+        console.log('result: ', result[0][0].message)
+        res.status(200).json({
+          status: 200,
+          ...result[0][0]
+        });
+      }
+
+  } catch(error){
+    console.log('error.message: ', error.message)
+    res.status(500).json({
+      message: error.message,
+      status: 500
+    });
+  };
+};
 // -----------------------------------------------------------------------------------------------------
 
 // Procedimientos por crear
@@ -555,8 +613,11 @@ export const methods = {
   registerStudentInProject,
   registerResourceInProject,
   registerAdviserInProject,
+  //delete teacher
+  deleteTeacher,
   // delete material
   deleteMaterials
+
 };
 // crear controlador , crear otra ruta sandri.routes.js
 
