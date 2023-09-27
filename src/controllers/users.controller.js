@@ -357,7 +357,7 @@ const addResources = async (req, res) => {
         message: "Ingresa los datos completos",
       });
     } else {
-      const result = await connection.query(`call InsertResource('${resoruce_name}','${observation}','${amount}','${status}','${description}');`);
+      const result = await connection.query(`call sp_insert_resource('${resoruce_name}','${observation}','${amount}','${status}','${description}');`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
@@ -419,7 +419,7 @@ const deleteMaterials = async (req, res) => {
         message: "Ingresa un ID válido",
       });
     } else {
-      const result = await connection.query(`call DeleteResources ('${id_resource}');`);
+      const result = await connection.query(`call sp_delete_resources('${id_resource}');`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
