@@ -406,6 +406,38 @@ const deleteMaterials = async (req, res) => {
   };
 };
 
+
+// Procedimientos de Modificación ------------------------------------------------------------
+//view resources tabla materiales 
+// Procedimiento para editar materiales 
+
+const editarMateriales = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { id_resource, resoruce_name, description, observation, amount } = req.body;
+    if (!id_resource || !resoruce_name || !description || !observation || !amount) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingresa los datos completos",
+      });
+    } else {
+      const result = await connection.query(`call sp_edit_resources('${id_resource}','${resoruce_name}','${observation}','${amount}','${description}');`);
+      console.log('result: ', result[0][0].message)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0],
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
+  }
+};
+
 // -----------------------------------------------------------------------------------------------------
 
 // Procedimientos por crear
@@ -554,7 +586,9 @@ export const methods = {
   registerResourceInProject,
   registerAdviserInProject,
   // delete material
-  deleteMaterials
+  deleteMaterials,
+  //edit material
+  editarMateriales
 };
 // crear controlador , crear otra ruta sandri.routes.js
 

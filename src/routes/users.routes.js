@@ -45,8 +45,7 @@ router.post("/api/add-adviser-project", userController.registerAdviserInProject)
 //view resources table materials
 router.post("/api/add-resources", userController.addResources); //Procedimiento para agregar materiales
 //- EDITAR
-
-
+router.put("/api/edit-materials", userController.editarMateriales); //Procedimiento para editar materiales
 //- ELIMINAR
 router.delete("/api/delete-materials", userController.deleteMaterials); // Procedimiento para eliminar materiales 
 
