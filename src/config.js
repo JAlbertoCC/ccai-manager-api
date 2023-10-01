@@ -4,20 +4,21 @@
 import { config } from "dotenv";
 
 config();
-/*export default {
+export default {
   host: process.env.HOST || "192.168.166.97", 
   database: process.env.DATABASE || "sg_ccai_manager2",
   user: process.env.USER || "Servidor-CCAI",
   password: process.env.PASSWORD || "ccai"
 }
-*/
+
 //conexion local
 
-
+/*
 export default {
   host: process.env.HOST || "localhost",
   database: process.env.DATABASE || "sg_ccai_manager2",
   user: process.env.USER || "root",
-  password: process.env.PASSWORD || "310101"       // password del mysql personal
+  password: process.env.PASSWORD || "ccai"       // password del mysql personal
 }
+*/
 
