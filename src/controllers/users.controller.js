@@ -1,12 +1,24 @@
-import { getConnection } from "./../database/database"
+import { getConnection } from "./../database/database";
 import { generateHash } from "../utils/hash";
 // procedimiento para registrar alumnos nuevos
 const registerUsers = async (req, res) => {
   try {
     const connection = await getConnection();
     //Estas variables deben ser llamadas igual desde postman O desde el front
-    const { matricula, name, first_name, second_name, address, cell_phoneNumber, gender, carrer, service_provide, institutional_emailEs, password } = req.body;
-    console.log('req.body: ', req.body);
+    const {
+      matricula,
+      name,
+      first_name,
+      second_name,
+      address,
+      cell_phoneNumber,
+      gender,
+      carrer,
+      service_provide,
+      institutional_emailEs,
+      password,
+    } = req.body;
+    console.log("req.body: ", req.body);
     if (!matricula) {
       res.status(400).json({
         status: 400,
@@ -15,20 +27,21 @@ const registerUsers = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_student_register('${matricula}','${name}','${first_name}','${second_name}','${address}','${cell_phoneNumber}','${gender}','${carrer}','${service_provide}','${institutional_emailEs}','${hash}', @mensaje, @succes);`);
-      console.log('result: ', result[0][0].message)
+      const result = await connection.query(
+        `call sp_student_register('${matricula}','${name}','${first_name}','${second_name}','${address}','${cell_phoneNumber}','${gender}','${carrer}','${service_provide}','${institutional_emailEs}','${hash}', @mensaje, @succes);`
+      );
+      console.log("result: ", result[0][0].message);
       res.status(200).json({
         status: 200,
-        ...result[0][0]
+        ...result[0][0],
       });
     }
   } catch (error) {
-    console.log('error.message: ', error.message)
-    res.status(500)
-      .json({
-        message: error.message,
-        status: 500
-      });
+    console.log("error.message: ", error.message);
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
   }
 };
 
@@ -53,7 +66,7 @@ const listCarrer = async (req, res) => {
     res.status(500);
     res.send(error.message);
   }
-}
+};
 // lista de los servicios a prestar del alumno
 const listSerice = async (req, res) => {
   try {
@@ -65,7 +78,7 @@ const listSerice = async (req, res) => {
     res.status(500);
     res.send(error.message);
   }
-}
+};
 // informacion del proyecto VIEW: Proyects
 const listProyects = async (req, res) => {
   try {
@@ -77,14 +90,16 @@ const listProyects = async (req, res) => {
     res.status(500);
     res.send(error.message);
   }
-}
+};
 //VIEW Project-deatail
 //iNFORMACION DEL PROYECTO VISTA: PROJECTDETAIL
 const listProjectInfo = async (req, res) => {
   try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from projectInfo where id_project = ${id_project};`);
+    const result = await connection.query(
+      `select * from projectInfo where id_project = ${id_project};`
+    );
 
     res.json(result);
   } catch (error) {
@@ -97,7 +112,9 @@ const listStudentsInProject = async (req, res) => {
   try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from studentInProyect where id_project = ${id_project};`);
+    const result = await connection.query(
+      `select * from studentInProyect where id_project = ${id_project};`
+    );
 
     res.json(result);
   } catch (error) {
@@ -110,7 +127,9 @@ const listResourceBorrowedInProject = async (req, res) => {
   try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from resource_borrowedInProject where id_project = ${id_project};`);
+    const result = await connection.query(
+      `select * from resource_borrowedInProject where id_project = ${id_project};`
+    );
 
     res.json(result);
   } catch (error) {
@@ -118,12 +137,14 @@ const listResourceBorrowedInProject = async (req, res) => {
     res.send(error.message);
   }
 };
-// Asesores de un proyecto -Asesores del proyecto 
+// Asesores de un proyecto -Asesores del proyecto
 const adviserInProject = async (req, res) => {
   try {
     const id_project = req.params.id_project;
     const connection = await getConnection();
-    const result = await connection.query(`select * from adviserInProject where id_project = ${id_project};`);
+    const result = await connection.query(
+      `select * from adviserInProject where id_project = ${id_project};`
+    );
 
     res.json(result);
   } catch (error) {
@@ -132,18 +153,18 @@ const adviserInProject = async (req, res) => {
   }
 };
 
-// view RESOURCES 
+// view RESOURCES
 // lista de todos los recusos existentes en el CCAI
 const listResources = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from all_resources")
+    const result = await connection.query("select * from all_resources");
     res.json(result);
   } catch (error) {
-    res.status(500)
-    res.send(error.message)
+    res.status(500);
+    res.send(error.message);
   }
-}
+};
 // lista de todos los profesores, docentes, asesores del ccai
 const listTeacher = async (req, res) => {
   try {
@@ -168,16 +189,18 @@ const listStudentsRegister = async (req, res) => {
     res.send(error.message);
   }
 };
-// VIEW aplication student 
+// VIEW aplication student
 // muestra alumnos recienregistrados sin actiar o rechazar
 const consultingstudentsRequest = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from consultingstudentsRequest");
+    const result = await connection.query(
+      "select * from consultingstudentsRequest"
+    );
 
     const response = result.map((row) => {
       const startDate = new Date(row.start_date);
-      const formattedDate = startDate.toISOString().split('T')[0];
+      const formattedDate = startDate.toISOString().split("T")[0];
 
       return {
         matricula: row.matricula,
@@ -200,11 +223,13 @@ const consultingstudentsRequest = async (req, res) => {
 const consultingstudentsRech = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from consultingstudentsRech");
+    const result = await connection.query(
+      "select * from consultingstudentsRech"
+    );
 
     const response = result.map((row) => {
       const startDate = new Date(row.start_date);
-      const formattedDate = startDate.toISOString().split('T')[0];
+      const formattedDate = startDate.toISOString().split("T")[0];
 
       return {
         matricula: row.matricula,
@@ -228,11 +253,13 @@ const consultingstudentsRech = async (req, res) => {
 const consultingstudentsAccepts = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from consultingstudentsAccepts");
+    const result = await connection.query(
+      "select * from consultingstudentsAccepts"
+    );
 
     const response = result.map((row) => {
       const startDate = new Date(row.start_date);
-      const formattedDate = startDate.toISOString().split('T')[0];
+      const formattedDate = startDate.toISOString().split("T")[0];
 
       return {
         matricula: row.matricula,
@@ -258,7 +285,7 @@ const registerStudentInProject = async (req, res) => {
   try {
     const connection = await getConnection();
     const { matricula, id_Project } = req.body;
-    console.log('req.body: ', req.body);
+    console.log("req.body: ", req.body);
     if (!matricula) {
       res.status(400).json({
         status: 400,
@@ -267,19 +294,20 @@ const registerStudentInProject = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_addStudent_inProyect('${matricula}','${id_Project},, @mensaje, @succes');`);
+      const result = await connection.query(
+        `call sp_addStudent_inProyect('${matricula}','${id_Project},, @mensaje, @succes');`
+      );
       res.status(200).json({
         status: 200,
-        message: "Alumno añadido al proyecto"
+        message: "Alumno añadido al proyecto",
       });
     }
   } catch (error) {
-    console.log('error.message: ', error.message)
-    res.status(500)
-      .json({
-        message: error.message,
-        status: 500
-      });
+    console.log("error.message: ", error.message);
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
   }
 };
 // Agregar Materiales prestados a un proyecto segun el ID del proyecto
@@ -287,7 +315,7 @@ const registerResourceInProject = async (req, res) => {
   try {
     const connection = await getConnection();
     const { id_resourceB, id_projectR, amountP } = req.body;
-    console.log('req.body: ', req.body);
+    console.log("req.body: ", req.body);
     if (!matricula) {
       res.status(400).json({
         status: 400,
@@ -296,19 +324,20 @@ const registerResourceInProject = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_addResourceInProject('${id_resourceB}','${id_projectR},'${amountP},@mensaje, @succes');`);
+      const result = await connection.query(
+        `call sp_addResourceInProject('${id_resourceB}','${id_projectR},'${amountP},@mensaje, @succes');`
+      );
       res.status(200).json({
         status: 200,
-        message: "Alumno añadido al proyecto"
+        message: "Alumno añadido al proyecto",
       });
     }
   } catch (error) {
-    console.log('error.message: ', error.message)
-    res.status(500)
-      .json({
-        message: error.message,
-        status: 500
-      });
+    console.log("error.message: ", error.message);
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
   }
 };
 // Agregar Docentes, Asesores a un proyecto segun el ID del proyecto
@@ -316,7 +345,7 @@ const registerAdviserInProject = async (req, res) => {
   try {
     const connection = await getConnection();
     const { matriculaAdviser, matriculaStudent, typeAdviser } = req.body;
-    console.log('req.body: ', req.body);
+    console.log("req.body: ", req.body);
     if (!matricula) {
       res.status(400).json({
         status: 400,
@@ -325,31 +354,32 @@ const registerAdviserInProject = async (req, res) => {
       });
     } else {
       const hash = generateHash(password);
-      const result = await connection.query(`call sp_addAdviserInProject('${matriculaAdviser}','${matriculaStudent},'${typeAdviser},@mensaje, @succes');`);
+      const result = await connection.query(
+        `call sp_addAdviserInProject('${matriculaAdviser}','${matriculaStudent},'${typeAdviser},@mensaje, @succes');`
+      );
       res.status(200).json({
         status: 200,
-        message: "Alumno añadido al proyecto"
+        message: "Alumno añadido al proyecto",
       });
     }
   } catch (error) {
-    console.log('error.message: ', error.message)
-    res.status(500)
-      .json({
-        message: error.message,
-        status: 500
-      });
+    console.log("error.message: ", error.message);
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
   }
 };
 
-
-// view resources table materials  
-// Procedimiento para agregar materiales 
+// view resources table materials
+// Procedimiento para agregar materiales
 
 const addResources = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { resoruce_name, description, observation, status, amount } = req.body;
-    console.log('req.body: ', req.body);
+    const { resoruce_name, description, observation, status, amount } =
+      req.body;
+    console.log("req.body: ", req.body);
     if (!resoruce_name || !description || !observation || !status || !amount) {
       res.status(400).json({
         status: 400,
@@ -357,27 +387,28 @@ const addResources = async (req, res) => {
         message: "Ingresa los datos completos",
       });
     } else {
-      const result = await connection.query(`call sp_insert_resource('${resoruce_name}','${observation}','${amount}','${status}','${description}');`);
-      console.log('result: ', result[0][0].message)
+      const result = await connection.query(
+        `call sp_insert_resource('${resoruce_name}','${observation}','${amount}','${status}','${description}');`
+      );
+      console.log("result: ", result[0][0].message);
       res.status(200).json({
         status: 200,
-        ...result[0][0]
+        ...result[0][0],
       });
     }
   } catch (error) {
-    console.log('error.message: ', error.message)
+    console.log("error.message: ", error.message);
     res.status(500).json({
       message: error.message,
-      status: 500
+      status: 500,
     });
   }
 };
 
-
 // Procedimientos de Eliminación ------------------------------------------------------------
 
-//view resources tabla materiales 
-// Procedimiento para eliminar materiales 
+//view resources tabla materiales
+// Procedimiento para eliminar materiales
 
 const deleteMaterials = async (req, res) => {
   try {
@@ -390,47 +421,83 @@ const deleteMaterials = async (req, res) => {
         message: "Ingresa un ID válido",
       });
     } else {
-      const result = await connection.query(`call sp_delete_resources('${id_resource}');`);
-      console.log('result: ', result[0][0].message)
-      res.status(200).json({
-        status: 200,
-        ...result[0][0]
-      });
-    }
-  } catch (error) {
-    console.log('error.message: ', error.message)
-    res.status(500).json({
-      message: error.message,
-      status: 500
-    });
-  };
-};
-
-
-// Procedimientos de Modificación ------------------------------------------------------------
-//view resources tabla materiales 
-// Procedimiento para editar materiales 
-
-const editarMateriales = async (req, res) => {
-  try {
-    const connection = await getConnection();
-    const { id_resource, resoruce_name, description, observation, amount } = req.body;
-    if (!id_resource || !resoruce_name || !description || !observation || !amount) {
-      res.status(400).json({
-        status: 400,
-        error: "Bad Request.",
-        message: "Ingresa los datos completos",
-      });
-    } else {
-      const result = await connection.query(`call sp_edit_resources('${id_resource}','${resoruce_name}','${observation}','${amount}','${description}');`);
-      console.log('result: ', result[0][0].message)
+      const result = await connection.query(
+        `call sp_delete_resources('${id_resource}');`
+      );
+      console.log("result: ", result[0][0].message);
       res.status(200).json({
         status: 200,
         ...result[0][0],
       });
     }
   } catch (error) {
-    console.log('error.message: ', error.message)
+    console.log("error.message: ", error.message);
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
+  }
+};
+
+// Procedimientos de Modificación ------------------------------------------------------------
+//view resources tabla materiales
+// Procedimiento para editar materiales
+
+const editarMateriales = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { id_resource, resoruce_name, description, observation, amount } =
+      req.body;
+    if (!resoruce_name || !description || !observation || !amount) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingresa los datos completos",
+      });
+    } else {
+      const result = await connection.query(
+        `call sp_edit_resources('${resoruce_name}','${observation}','${amount}','${description}' where id_resource = ${id_resource};`
+      );
+      console.log("result: ", result[0][0].message);
+      res.status(200).json({
+        status: 200,
+        ...result[0][0],
+      });
+    }
+  } catch (error) {
+    console.log("error.message: ", error.message);
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
+  }
+};
+
+
+// Procedimiento para consultar materiales
+
+const consultarMaterials = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { id_resource } = req.body;
+    if (!id_resource) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingresa un ID válido",
+      });
+    } else {
+      const result = await connection.query(
+        `call sp_consultResources('${id_resource}');`
+      );
+      console.log("result: ", result[0][0].message);
+      res.status(200).json({
+        status: 200,
+        ...result[0][0],
+      });
+    }
+  } catch (error) {
+    console.log("error.message: ", error.message);
     res.status(500).json({
       message: error.message,
       status: 500,
@@ -463,31 +530,39 @@ const checkingUser = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500)
-      .json(error.message);
+    res.status(500).json(error.message);
   }
 };
 const registerVisits = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { name, maternal_surname, paternal_surname, email, is_entry } = req.body;
+    const { name, maternal_surname, paternal_surname, email, is_entry } =
+      req.body;
 
     if (name || maternal_surname || paternal_surname || email || is_entry) {
-      const result = await connection.query(`call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`);
+      const result = await connection.query(
+        `call checking_visits('${name}', '${maternal_surname}', '${paternal_surname}', '${email}', '${is_entry}')`
+      );
 
-      res.status(200)
-        .json({
-          status: "OK",
-          message: "Datos registrdos con exito",
-        });
-    } else if (name || !maternal_surname || !paternal_surname || email || is_entry == false) {
-      const result = await connection.query(`call checking_visits('${name}','${email}', '${is_entry}')`);
+      res.status(200).json({
+        status: "OK",
+        message: "Datos registrdos con exito",
+      });
+    } else if (
+      name ||
+      !maternal_surname ||
+      !paternal_surname ||
+      email ||
+      is_entry == false
+    ) {
+      const result = await connection.query(
+        `call checking_visits('${name}','${email}', '${is_entry}')`
+      );
 
-      res.status(200)
-        .json({
-          status: "OK",
-          message: "Datos registrdos con exito",
-        });
+      res.status(200).json({
+        status: "OK",
+        message: "Datos registrdos con exito",
+      });
     } else if (!name || !maternal_surname || !paternal_surname || !email) {
       res.status(400).json({
         error: "Bad Request.",
@@ -495,24 +570,25 @@ const registerVisits = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500)
-      .json({
-        status: 500,
-        message: error.message
-      });
+    res.status(500).json({
+      status: 500,
+      message: error.message,
+    });
   }
 };
 
-// ?? ELIMINAR SI NO SE OCUPAN jhon favor de verificar esto 
+// ?? ELIMINAR SI NO SE OCUPAN jhon favor de verificar esto
 //view solitudes de alumnos = activ se muestra el alumno cuando esta en null (recien registrados)
 const consultingStudents = async (req, res) => {
   try {
     const connection = await getConnection();
-    const result = await connection.query("select * from consultingstudentsRequest");
+    const result = await connection.query(
+      "select * from consultingstudentsRequest"
+    );
 
     const response = result.map((row) => {
       const startDate = new Date(row.start_date);
-      const formattedDate = startDate.toISOString().split('T')[0];
+      const formattedDate = startDate.toISOString().split("T")[0];
 
       return {
         matricula: row.matricula,
@@ -531,7 +607,7 @@ const consultingStudents = async (req, res) => {
     res.send(error.message);
   }
 };
-// eliminr despuies de confirmar su desuso 
+// eliminr despuies de confirmar su desuso
 const listProyectInfo = async (req, res) => {
   try {
     const connection = await getConnection();
@@ -544,20 +620,21 @@ const listProyectInfo = async (req, res) => {
         message: "Proyecto no encontrado ",
       });
     } else {
-      const result = await connection.query(`SELECT * FROM projectDetail WHERE projectId = ${projectId};`);
-      console.log('result: ', result)
+      const result = await connection.query(
+        `SELECT * FROM projectDetail WHERE projectId = ${projectId};`
+      );
+      console.log("result: ", result);
       res.status(200).json({
         status: 200,
-        ...result[0][0]
+        ...result[0][0],
       });
     }
   } catch (error) {
-    console.log('error.message: ', error.message)
-    res.status(500)
-      .json({
-        message: error.message,
-        status: 500
-      });
+    console.log("error.message: ", error.message);
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
   }
 };
 
@@ -576,7 +653,7 @@ export const methods = {
   listProjectInfo,
   listStudentsInProject,
   adviserInProject,
-  // add materials 
+  // add materials
   addResources,
   consultingstudentsRequest,
   consultingstudentsAccepts,
@@ -588,7 +665,9 @@ export const methods = {
   // delete material
   deleteMaterials,
   //edit material
-  editarMateriales
+  editarMateriales,
+  //consultar materiales
+  consultarMaterials
 };
 // crear controlador , crear otra ruta sandri.routes.js
 

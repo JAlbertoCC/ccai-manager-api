@@ -31,6 +31,9 @@ router.get("/api/consulting-studentsRequest",userController.consultingstudentsRe
 router.get("/api/consulting-studentsRech",userController.consultingstudentsRech); // view users tabla de usuarios con campo  active igual a  0 (correcto)
 //view register student
 router.get("/api/consulting-studentsAccepts",userController.consultingstudentsAccepts); // view users tabla de usuarios con campo  active igual a 1   (correcto)
+// view resources - materials
+router.get("/api/consult-materials", userController.consultarMaterials); // view resources tabla de materiales
+
 
 //- CREAR
 // router.post("/api/users-checking", userController.checkingUser); // URGE REVISAR FUNCION FALTA CREAR PROCEDIMIENTO
@@ -42,12 +45,16 @@ router.post("/api/visit-register", userController.registerVisits); // URGE PROCE
 router.post("/api/add-student-project", userController.registerStudentInProject); // Procedimiento para agregar o asignar integrantes (alumnos) en proyectos 
 router.post("/api/add-resources-preject", userController.registerResourceInProject); // Procedimiento para agregar recursos que se solicitan
 router.post("/api/add-adviser-project", userController.registerAdviserInProject); // Procedimiento para asignar un asespr a estudaintes y proyecto
+
 //view resources table materials
+// --AGREGAR
 router.post("/api/add-resources", userController.addResources); //Procedimiento para agregar materiales
 //- EDITAR
 router.put("/api/edit-materials", userController.editarMateriales); //Procedimiento para editar materiales
 //- ELIMINAR
 router.delete("/api/delete-materials", userController.deleteMaterials); // Procedimiento para eliminar materiales 
+
+
 
 
 
