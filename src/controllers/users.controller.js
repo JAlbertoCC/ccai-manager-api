@@ -448,7 +448,7 @@ const deleteTeacher = async(req, res) =>{
           message: "Ingresa un ID valido",
         });
       } else{
-        const result = await connection.query(`call deleteTeacher_ ('${id_adviser}');`);
+        const result = await connection.query(`call sp_delete_teacher ('${id_adviser}');`);
         console.log('result: ', result[0][0].message)
         res.status(200).json({
           status: 200,
