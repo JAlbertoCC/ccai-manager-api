@@ -474,7 +474,7 @@ const editarMateriales = async (req, res) => {
 };
 
 
-// Procedimiento para consultar materiales
+// Procedimiento para consultar materiales con el ID 
 
 const consultarMaterials = async (req, res) => {
   try {
