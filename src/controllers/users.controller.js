@@ -438,6 +438,105 @@ const editarMateriales = async (req, res) => {
   }
 };
 
+// view resources table advisers
+// Procedimiento para agregar profesores 
+
+const addAdviser = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { name_adviser, first_name, second_name, matricula, gender, id_career_fk } = req.body;
+    console.log('req.body: ', req.body);
+    if (!name_adviser || !first_name || !second_name || !matricula || !gender || !id_career_fk) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingresa los datos completos",
+      });
+    } else {
+      const result = await connection.query(`call sp_insert_adviser('${name_adviser}','${first_name}','${second_name}','${matricula}','${gender}','${id_career_fk});`);
+      console.log('result: ', result[0][0].message)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0]
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json({
+      message: error.message,
+      status: 500
+    });
+  }
+};
+
+
+// Procedimientos de Eliminación
+
+//view resources tabla advisers 
+// Procedimiento para eliminar advisers 
+
+const deleteAdvisers = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { id_adviser } = req.body;
+    if (!id_adviser) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingresa un ID válido",
+      });
+    } else {
+      const result = await connection.query(`call sp_delete_adviser('${id_adviser}');`);
+      console.log('result: ', result[0][0].message)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0]
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json({
+      message: error.message,
+      status: 500
+    });
+  };
+};
+
+
+// Procedimientos de Modificación 
+//view resources tabla materiales 
+// Procedimiento para editar advisers 
+
+const editAdviser = async (req, res) => {
+  try {
+    const connection = await getConnection();
+    const { id_adviser, name_adviser, first_name, second_name, matricula, gender, id_career_fk } = req.body;
+    console.log('req.body: ', req.body);
+    if (!id_adviser ||!name_adviser || !first_name || !second_name || !matricula || !gender || !id_career_fk) {
+      res.status(400).json({
+        status: 400,
+        error: "Bad Request.",
+        message: "Ingresa los datos completos",
+      });
+    } else {
+      const result = await connection.query(`call sp_insert_adviser('${name_adviser}','${first_name}','${second_name}','${matricula}','${gender}','${id_career_fk});`);
+      console.log('result: ', result[0][0].message)
+      res.status(200).json({
+        status: 200,
+        ...result[0][0],
+      });
+    }
+  } catch (error) {
+    console.log('error.message: ', error.message)
+    res.status(500).json({
+      message: error.message,
+      status: 500,
+    });
+  }
+};
+
+
+
 // -----------------------------------------------------------------------------------------------------
 
 // Procedimientos por crear
@@ -588,7 +687,12 @@ export const methods = {
   // delete material
   deleteMaterials,
   //edit material
-  editarMateriales
+  editarMateriales,
+  //Table resources advisers 
+  addAdviser, // Agregar profesores 
+  deleteAdvisers, //eliminar profesores 
+  editAdviser, //modificar profesores 
+
 };
 // crear controlador , crear otra ruta sandri.routes.js
 
