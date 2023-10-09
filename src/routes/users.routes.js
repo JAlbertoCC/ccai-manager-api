@@ -49,10 +49,22 @@ router.post("/api/add-adviser-project", userController.registerAdviserInProject)
 //view resources table materials
 // --AGREGAR
 router.post("/api/add-resources", userController.addResources); //Procedimiento para agregar materiales
+// view resources table adviers
+router.post("api/add-advisers", userController.addAdviser); //Procedimiento para insertar asesores 
+
+
 //- EDITAR
 router.put("/api/edit-materials", userController.editarMateriales); //Procedimiento para editar materiales
+router.put("api/edit-advisers", userController.editAdviser); // Procedimiento para editar advisers
+
+
+
 //- ELIMINAR
 router.delete("/api/delete-materials", userController.deleteMaterials); // Procedimiento para eliminar materiales 
+router.delete("api/delete-advisers", userController.deleteAdvisers); //Procedimiento para eliminar advisers 
+
+
+
 
 
 
