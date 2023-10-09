@@ -511,16 +511,16 @@ const consultarMaterials = async (req, res) => {
 const addAdviser = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { name_adviser, first_name, second_name, matricula, gender, id_career_fk } = req.body;
+    const { name_adviser, first_name, second_name, matricula, division, gender } = req.body;
     console.log('req.body: ', req.body);
-    if (!name_adviser || !first_name || !second_name || !matricula || !gender || !id_career_fk) {
+    if (!name_adviser || !first_name || !second_name || !matricula || !division || !gender ) {
       res.status(400).json({
         status: 400,
         error: "Bad Request.",
         message: "Ingresa los datos completos",
       });
     } else {
-      const result = await connection.query(`call sp_insert_adviser('${name_adviser}','${first_name}','${second_name}','${matricula}','${gender}','${id_career_fk});`);
+      const result = await connection.query(`call sp_insert_adviser('${name_adviser}','${division}','${matricula}','${first_name}','${second_name}','${gender}');`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,
@@ -577,16 +577,16 @@ const deleteAdvisers = async (req, res) => {
 const editAdviser = async (req, res) => {
   try {
     const connection = await getConnection();
-    const { id_adviser, name_adviser, first_name, second_name, matricula, gender, id_career_fk } = req.body;
+    const { id_adviser, name_adviser, first_name, second_name, matricula, division, gender, status } = req.body;
     console.log('req.body: ', req.body);
-    if (!id_adviser ||!name_adviser || !first_name || !second_name || !matricula || !gender || !id_career_fk) {
+    if ( !name_adviser || !first_name || !second_name || !matricula || !division || !gender ) {
       res.status(400).json({
         status: 400,
         error: "Bad Request.",
         message: "Ingresa los datos completos",
       });
     } else {
-      const result = await connection.query(`call sp_insert_adviser('${name_adviser}','${first_name}','${second_name}','${matricula}','${gender}','${id_career_fk});`);
+      const result = await connection.query(`call sp_insert_adviser('${name_adviser}','${first_name}','${second_name}','${matricula}','${division}','${gender}');`);
       console.log('result: ', result[0][0].message)
       res.status(200).json({
         status: 200,

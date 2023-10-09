@@ -50,7 +50,7 @@ router.post("/api/add-adviser-project", userController.registerAdviserInProject)
 // --AGREGAR
 router.post("/api/add-resources", userController.addResources); //Procedimiento para agregar materiales
 // view resources table adviers
-router.post("api/add-advisers", userController.addAdviser); //Procedimiento para insertar asesores 
+router.post("/api/add-advisers", userController.addAdviser); //Procedimiento para insertar asesores 
 
 
 //- EDITAR
